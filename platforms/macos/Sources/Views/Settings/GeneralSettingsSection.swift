@@ -14,13 +14,13 @@ struct GeneralSettingsSection: View {
     @Default(.skipKillConfirmation) private var skipKillConfirmation
 
     var body: some View {
-        SettingsGroup("General", icon: "gearshape.fill") {
+        SettingsGroup("通用", icon: "gearshape.fill") {
             SettingsRowContainer {
                 LaunchAtLogin.Toggle {
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("Launch at Login")
+                        Text("登录时启动")
                             .fontWeight(.medium)
-                        Text("Start PortKiller when you log in")
+                        Text("登录时自动启动 PortKiller")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
@@ -29,16 +29,16 @@ struct GeneralSettingsSection: View {
             }
 
 			SettingsToggleRow(
-				title: "Hide System processes",
-				subtitle: "Hide macOS processes from the process list",
+				title: "隐藏系统进程",
+				subtitle: "在进程列表中隐藏 macOS 系统进程",
 				isOn: $hideSystemProcesses
 			)
 
             SettingsDivider()
 
             SettingsToggleRow(
-                title: "Skip kill confirmation",
-                subtitle: "Kill processes immediately without confirmation prompt",
+                title: "跳过结束确认",
+                subtitle: "无需确认提示，立即结束进程",
                 isOn: $skipKillConfirmation
             )
         }

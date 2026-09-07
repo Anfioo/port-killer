@@ -9,19 +9,19 @@ struct OnboardingReadyStep: View {
                 .font(.system(size: 56))
                 .foregroundColor(.green)
 
-            Text("You're All Set!")
+            Text("一切就绪！")
                 .font(.largeTitle)
                 .fontWeight(.bold)
 
-            Text("PortKiller is ready to use.\nLook for the icon in your menu bar.")
+            Text("PortKiller 已准备就绪。\n在菜单栏中查找图标。")
                 .font(.title3)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
                 .lineSpacing(4)
 
             HStack(spacing: 24) {
-                tipView(icon: "menubar.arrow.up.rectangle", text: "Click the menu bar icon\nfor quick access")
-                tipView(icon: "gearshape.fill", text: "Visit Settings to\ncustomize further")
+                tipView(icon: "menubar.arrow.up.rectangle", text: "点击菜单栏图标\n快速访问")
+                tipView(icon: "gearshape.fill", text: "访问设置\n进行更多自定义")
             }
             .padding(.top, 8)
 

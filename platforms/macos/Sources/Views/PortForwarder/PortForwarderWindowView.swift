@@ -9,17 +9,17 @@ struct PortForwarderWindowView: View {
         TabView {
             ConnectionsTab(discoveryManager: $discoveryManager)
                 .tabItem {
-                    Label("Connections", systemImage: "point.3.connected.trianglepath.dotted")
+                    Label("连接", systemImage: "point.3.connected.trianglepath.dotted")
                 }
 
             ServiceBrowserTab()
                 .tabItem {
-                    Label("Browse", systemImage: "magnifyingglass")
+                    Label("浏览", systemImage: "magnifyingglass")
                 }
 
             PortForwarderSettingsTab()
                 .tabItem {
-                    Label("Settings", systemImage: "gear")
+                    Label("设置", systemImage: "gear")
                 }
         }
         .frame(minWidth: 850, idealWidth: 1000, minHeight: 600, idealHeight: 700)

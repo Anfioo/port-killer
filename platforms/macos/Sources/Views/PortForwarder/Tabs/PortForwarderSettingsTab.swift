@@ -6,15 +6,15 @@ struct PortForwarderSettingsTab: View {
 
     var body: some View {
         Form {
-            Section("Startup") {
-                Toggle("Auto-start connections on app launch", isOn: $autoStart)
+            Section("启动") {
+                Toggle("应用启动时自动启动连接", isOn: $autoStart)
             }
 
-            Section("Notifications") {
-                Toggle("Show connection notifications", isOn: $showNotifications)
+            Section("通知") {
+                Toggle("显示连接通知", isOn: $showNotifications)
             }
 
-            Section("Dependencies") {
+            Section("依赖项") {
                 DependencyRow(
                     name: "kubectl",
                     dependency: DependencyChecker.shared.kubectl,

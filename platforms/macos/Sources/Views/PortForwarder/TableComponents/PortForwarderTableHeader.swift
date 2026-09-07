@@ -3,15 +3,15 @@ import SwiftUI
 struct PortForwarderTableHeader: View {
     var body: some View {
         HStack(spacing: 0) {
-            Text("Status")
+            Text("状态")
                 .frame(width: 80, alignment: .leading)
-            Text("Name")
+            Text("名称")
                 .frame(maxWidth: .infinity, alignment: .leading)
-            Text("Service")
+            Text("服务")
                 .frame(maxWidth: .infinity, alignment: .leading)
-            Text("Port")
+            Text("端口")
                 .frame(width: 80, alignment: .leading)
-            Text("Actions")
+            Text("操作")
                 .frame(width: 80, alignment: .center)
         }
         .font(.caption.weight(.medium))
