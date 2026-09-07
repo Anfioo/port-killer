@@ -28,22 +28,22 @@ struct TunnelLogView: View {
             HStack(spacing: 8) {
                 Image(systemName: "magnifyingglass")
                     .foregroundStyle(.secondary)
-                TextField("Search logs...", text: $searchText)
+                TextField("搜索日志...", text: $searchText)
                     .textFieldStyle(.plain)
 
                 Spacer()
 
                 // Level filter
                 Picker("", selection: $filterLevel) {
-                    Text("All").tag(nil as TunnelLogEntry.LogLevel?)
-                    Text("Requests").tag(TunnelLogEntry.LogLevel.request as TunnelLogEntry.LogLevel?)
-                    Text("Errors").tag(TunnelLogEntry.LogLevel.error as TunnelLogEntry.LogLevel?)
-                    Text("Warnings").tag(TunnelLogEntry.LogLevel.warning as TunnelLogEntry.LogLevel?)
+                    Text("全部").tag(nil as TunnelLogEntry.LogLevel?)
+                    Text("请求").tag(TunnelLogEntry.LogLevel.request as TunnelLogEntry.LogLevel?)
+                    Text("错误").tag(TunnelLogEntry.LogLevel.error as TunnelLogEntry.LogLevel?)
+                    Text("警告").tag(TunnelLogEntry.LogLevel.warning as TunnelLogEntry.LogLevel?)
                 }
                 .pickerStyle(.segmented)
                 .frame(width: 280)
 
-                Text("\(filteredLogs.count) entries")
+                Text("\(filteredLogs.count) 条")
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .frame(width: 70, alignment: .trailing)
@@ -55,7 +55,7 @@ struct TunnelLogView: View {
                 }
                 .buttonStyle(.plain)
                 .foregroundStyle(.secondary)
-                .help("Clear logs")
+                .help("清除日志")
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 6)
@@ -66,9 +66,9 @@ struct TunnelLogView: View {
             // Log entries
             if filteredLogs.isEmpty {
                 ContentUnavailableView {
-                    Label("No Logs", systemImage: "doc.text")
+                    Label("暂无日志", systemImage: "doc.text")
                 } description: {
-                    Text(tunnel.logs.isEmpty ? "Logs will appear here as requests come in" : "No logs match the current filter")
+                    Text(tunnel.logs.isEmpty ? "请求进入时日志将显示在此处" : "没有匹配当前筛选条件的日志")
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {

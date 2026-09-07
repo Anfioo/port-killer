@@ -8,7 +8,7 @@ struct OnboardingSetupStep: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text("Quick Setup")
+            Text("快速设置")
                 .font(.title2)
                 .fontWeight(.bold)
                 .padding(.bottom, 4)
@@ -17,9 +17,9 @@ struct OnboardingSetupStep: View {
             VStack(alignment: .leading, spacing: 8) {
                 LaunchAtLogin.Toggle {
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("Launch at Login")
+                        Text("登录时启动")
                             .fontWeight(.medium)
-                        Text("Start PortKiller when you log in")
+                        Text("登录时自动启动 PortKiller")
                             .font(.callout)
                             .foregroundStyle(.secondary)
                     }
@@ -34,9 +34,9 @@ struct OnboardingSetupStep: View {
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("Notifications")
+                        Text("通知")
                             .fontWeight(.medium)
-                        Text("Get notified when watched ports change state")
+                        Text("关注端口状态变化时收到通知")
                             .font(.callout)
                             .foregroundStyle(.secondary)
                     }
@@ -47,12 +47,12 @@ struct OnboardingSetupStep: View {
                         HStack(spacing: 4) {
                             Image(systemName: "checkmark.circle.fill")
                                 .foregroundStyle(.green)
-                            Text("Enabled")
+                            Text("已启用")
                                 .font(.callout)
                                 .foregroundStyle(.green)
                         }
                     } else if notificationStatus == .denied {
-                        Button("Open Settings") {
+                        Button("打开设置") {
                             if let bundleId = Bundle.main.bundleIdentifier {
                                 let url = URL(string: "x-apple.systempreferences:com.apple.Notifications-Settings.extension?id=\(bundleId)")!
                                 NSWorkspace.shared.open(url)
@@ -60,7 +60,7 @@ struct OnboardingSetupStep: View {
                         }
                         .controlSize(.small)
                     } else {
-                        Button("Enable") {
+                        Button("启用") {
                             requestPermission()
                         }
                         .controlSize(.small)
@@ -75,9 +75,9 @@ struct OnboardingSetupStep: View {
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("Global Shortcut")
+                        Text("全局快捷键")
                             .fontWeight(.medium)
-                        Text("Open PortKiller from anywhere")
+                        Text("从任何位置打开 PortKiller")
                             .font(.callout)
                             .foregroundStyle(.secondary)
                     }

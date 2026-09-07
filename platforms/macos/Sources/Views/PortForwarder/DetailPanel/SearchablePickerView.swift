@@ -48,7 +48,7 @@ struct SearchablePickerView: View {
                     Spacer()
                     ProgressView()
                         .controlSize(.small)
-                    Text("Loading...")
+                    Text("加载中...")
                         .foregroundStyle(.secondary)
                     Spacer()
                 }
@@ -56,12 +56,12 @@ struct SearchablePickerView: View {
             } else if filteredItems.isEmpty {
                 VStack(spacing: 8) {
                     if items.isEmpty {
-                        Text("No items")
+                        Text("暂无项目")
                             .foregroundStyle(.secondary)
-                        Button("Refresh") { onRefresh() }
+                        Button("刷新") { onRefresh() }
                             .buttonStyle(.bordered)
                     } else {
-                        Text("No matches")
+                        Text("无匹配项")
                             .foregroundStyle(.secondary)
                     }
                 }
@@ -105,7 +105,7 @@ struct SearchablePickerView: View {
             } label: {
                 HStack {
                     Image(systemName: "arrow.clockwise")
-                    Text("Refresh")
+                    Text("刷新")
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 6)

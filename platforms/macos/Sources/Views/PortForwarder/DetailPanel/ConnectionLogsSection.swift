@@ -13,7 +13,7 @@ struct ConnectionLogsSection: View {
         VStack(spacing: 0) {
             // Logs header
             HStack {
-                Text("Logs")
+                Text("日志")
                     .font(.headline)
 
                 if !connection.logs.isEmpty {
@@ -31,7 +31,7 @@ struct ConnectionLogsSection: View {
                         Image(systemName: "doc.on.doc")
                     }
                     .buttonStyle(.borderless)
-                    .help("Copy All Logs (Markdown)")
+                    .help("复制全部日志 (Markdown)")
 
                     Button {
                         connection.clearLogs()
@@ -39,7 +39,7 @@ struct ConnectionLogsSection: View {
                         Image(systemName: "trash")
                     }
                     .buttonStyle(.borderless)
-                    .help("Clear Logs")
+                    .help("清除日志")
                 }
             }
             .padding(.horizontal, 16)
@@ -53,7 +53,7 @@ struct ConnectionLogsSection: View {
                     Image(systemName: "text.alignleft")
                         .font(.system(size: 24))
                         .foregroundStyle(.tertiary)
-                    Text("No logs yet")
+                    Text("暂无日志")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                     Spacer()

@@ -14,7 +14,7 @@ struct NamespacePanel: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack {
-                Text("Namespaces")
+                Text("命名空间")
                     .font(.headline)
                 Spacer()
                 Button {
@@ -23,7 +23,7 @@ struct NamespacePanel: View {
                     Image(systemName: "plus.circle")
                 }
                 .buttonStyle(.plain)
-                .help("Add custom namespace")
+                .help("添加自定义命名空间")
                 Button {
                     onRefresh()
                 } label: {
@@ -31,7 +31,7 @@ struct NamespacePanel: View {
                 }
                 .buttonStyle(.plain)
                 .disabled(state == .loading)
-                .help("Refresh namespaces")
+                .help("刷新命名空间")
             }
             .padding(12)
 
@@ -41,7 +41,7 @@ struct NamespacePanel: View {
                 VStack {
                     Spacer()
                     ProgressView()
-                    Text("Loading...")
+                    Text("加载中...")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                     Spacer()
@@ -56,9 +56,9 @@ struct NamespacePanel: View {
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
                     HStack(spacing: 8) {
-                        Button("Retry", action: onRefresh)
+                        Button("重试", action: onRefresh)
                             .buttonStyle(.bordered)
-                        Button("Add Custom") {
+                        Button("添加自定义") {
                             showingAddSheet = true
                         }
                         .buttonStyle(.borderedProminent)
@@ -86,7 +86,7 @@ struct NamespacePanel: View {
                             .buttonStyle(.plain)
                             .contextMenu {
                                 if ns.isCustom {
-                                    Button("Remove", role: .destructive) {
+                                    Button("移除", role: .destructive) {
                                         onRemoveCustom(ns)
                                     }
                                 }
