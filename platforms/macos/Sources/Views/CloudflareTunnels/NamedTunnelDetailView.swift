@@ -82,7 +82,7 @@ struct NamedTunnelDetailView: View {
 
             if tunnel.status == .running {
                 badge(
-                    text: "\(tunnel.activeConnectionCount) connections",
+                    text: "\(tunnel.activeConnectionCount) 个连接",
                     icon: "link",
                     tint: .green
                 )
@@ -91,12 +91,12 @@ struct NamedTunnelDetailView: View {
             switch tunnel.runSafety {
             case .safe:
                 if tunnel.hasLocalConfigMatch {
-                    badge(text: "Local config", icon: "doc.text", tint: .blue)
+                    badge(text: "本地配置", icon: "doc.text", tint: .blue)
                 }
             case .managedElsewhere:
-                badge(text: "Managed elsewhere", icon: "lock.fill", tint: .orange)
+                badge(text: "其他位置管理", icon: "lock.fill", tint: .orange)
             case .noIngress:
-                badge(text: "No ingress", icon: "exclamationmark.triangle", tint: .yellow)
+                badge(text: "无入口规则", icon: "exclamationmark.triangle", tint: .yellow)
             }
 
             Spacer()
@@ -125,19 +125,19 @@ struct NamedTunnelDetailView: View {
                     Button {
                         appState.namedTunnelManager.run(tunnel, allowManagedElsewhere: true)
                     } label: {
-                        Label("Run Anyway", systemImage: "play.fill")
+                        Label("仍要运行", systemImage: "play.fill")
                             .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(.bordered)
                     .controlSize(.large)
                     .tint(.orange)
                     .disabled(!appState.tunnelManager.isCloudflaredInstalled)
-                    .help("Add this Mac as another connector for the tunnel")
+                    .help("将此 Mac 添加为隧道的另一个连接器")
                 } else {
                     Button {
                         appState.namedTunnelManager.run(tunnel)
                     } label: {
-                        Label("Run Tunnel", systemImage: "play.fill")
+                        Label("运行隧道", systemImage: "play.fill")
                             .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(.borderedProminent)
@@ -156,7 +156,7 @@ struct NamedTunnelDetailView: View {
                 Button {
                     appState.namedTunnelManager.stop(tunnel)
                 } label: {
-                    Label("Stop Tunnel", systemImage: "stop.fill")
+                    Label("停止隧道", systemImage: "stop.fill")
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.bordered)
@@ -173,19 +173,19 @@ struct NamedTunnelDetailView: View {
             GridItem(.flexible(), alignment: .topLeading),
             GridItem(.flexible(), alignment: .topLeading)
         ], spacing: 16) {
-            metaItem(label: "Tunnel ID", value: tunnel.tunnelID, monospaced: true)
-            metaItem(label: "Ingress Source", value: ingressSourceLabel)
+            metaItem(label: "隧道 ID", value: tunnel.tunnelID, monospaced: true)
+            metaItem(label: "入口来源", value: ingressSourceLabel)
             if let created = tunnel.createdAt {
-                metaItem(label: "Created", value: created.formatted(date: .abbreviated, time: .shortened))
+                metaItem(label: "创建时间", value: created.formatted(date: .abbreviated, time: .shortened))
             }
             if let metricsPort = tunnel.metricsPort {
-                metaItem(label: "Metrics", value: "127.0.0.1:\(metricsPort)", monospaced: true)
+                metaItem(label: "指标", value: "127.0.0.1:\(metricsPort)", monospaced: true)
             }
             if let started = tunnel.startedAt, tunnel.status == .running {
-                metaItem(label: "Started", value: started.formatted(.relative(presentation: .named)))
+                metaItem(label: "启动时间", value: started.formatted(.relative(presentation: .named)))
             }
             if let credentials = tunnel.credentialsPath {
-                metaItem(label: "Credentials", value: (credentials as NSString).abbreviatingWithTildeInPath, monospaced: true)
+                metaItem(label: "凭证", value: (credentials as NSString).abbreviatingWithTildeInPath, monospaced: true)
             }
         }
     }
@@ -194,7 +194,7 @@ struct NamedTunnelDetailView: View {
         switch tunnel.ingressSource {
         case .none: return "—"
         case .localConfig: return "~/.cloudflared/config.yml"
-        case .runtimeLog: return "Cloudflare dashboard"
+        case .runtimeLog: return "Cloudflare 仪表盘"
         }
     }
 
@@ -215,7 +215,7 @@ struct NamedTunnelDetailView: View {
 
     private var ingressSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Ingress Rules")
+            Text("入口规则")
                 .font(.headline)
 
             VStack(spacing: 4) {
@@ -231,7 +231,7 @@ struct NamedTunnelDetailView: View {
     private var edgeConnectionsSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Text("Edge Connections")
+                Text("边缘连接")
                     .font(.headline)
                 Text("\(tunnel.edgeConnections.count)")
                     .font(.caption.monospacedDigit())
@@ -279,9 +279,9 @@ struct NamedTunnelDetailView: View {
                 .foregroundStyle(.orange)
                 .font(.title3)
             VStack(alignment: .leading, spacing: 4) {
-                Text("This tunnel is managed by another origin")
+                Text("此隧道由其他源管理")
                     .font(.subheadline.weight(.semibold))
-                Text("It has active edge connections from other machines and no local ingress configuration. Running it here adds this Mac as another connector, which can split traffic between origins. Use Run Anyway only if that is intentional.")
+                Text("它有来自其他机器的活动边缘连接，且没有本地入口配置。在此处运行会将此 Mac 添加为另一个连接器，可能在多个源之间分流流量。仅在确有意向时使用「仍要运行」。")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -296,17 +296,17 @@ struct NamedTunnelDetailView: View {
     private var logsSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Text("Logs")
+                Text("日志")
                     .font(.headline)
                 Spacer()
                 if !tunnel.logs.isEmpty {
-                    Text("\(tunnel.logs.count) entries")
+                    Text("\(tunnel.logs.count) 条")
                         .font(.caption.monospacedDigit())
                         .foregroundStyle(.secondary)
                     Button {
                         tunnel.clearLogs()
                     } label: {
-                        Label("Clear", systemImage: "trash")
+                        Label("清除", systemImage: "trash")
                             .font(.caption)
                     }
                     .buttonStyle(.bordered)
@@ -324,7 +324,7 @@ struct NamedTunnelDetailView: View {
 
             if showLogs {
                 if tunnel.logs.isEmpty {
-                    Text(tunnel.status == .running ? "Waiting for output…" : "No logs yet. Run the tunnel to see live output.")
+                    Text(tunnel.status == .running ? "等待输出…" : "暂无日志。运行隧道以查看实时输出。")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                         .frame(maxWidth: .infinity, alignment: .leading)

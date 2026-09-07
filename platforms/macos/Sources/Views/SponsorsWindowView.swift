@@ -27,11 +27,11 @@ struct SponsorsPageView: View {
                         .foregroundStyle(.pink)
 
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("Sponsors")
+                        Text("赞助者")
                             .font(.title2)
                             .fontWeight(.bold)
 
-                        Text("Thank you for supporting PortKiller!")
+                        Text("感谢您支持 PortKiller！")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                     }
@@ -42,7 +42,7 @@ struct SponsorsPageView: View {
                         Link(destination: url) {
                             HStack(spacing: 6) {
                                 Image(systemName: "heart.fill")
-                                Text("Become a Sponsor")
+                                Text("成为赞助者")
                             }
                             .font(.callout)
                             .padding(.horizontal, 16)
@@ -63,7 +63,7 @@ struct SponsorsPageView: View {
                         // Active Sponsors
                         if !activeSponsors.isEmpty {
                             sponsorSection(
-                                title: "Active Sponsors",
+                                title: "活跃赞助者",
                                 icon: "star.fill",
                                 color: .yellow,
                                 sponsors: activeSponsors
@@ -73,19 +73,19 @@ struct SponsorsPageView: View {
                         // Contributors
                         if !sponsorManager.contributors.isEmpty {
                             contributorSection(
-                                title: "Contributors",
+                                title: "贡献者",
                                 icon: "hammer.fill",
                                 color: .blue,
 								contributors: sponsorManager.contributors
                             )
                         } else {
-                            Text("No contributors found")
+                            Text("未找到贡献者")
                         }
 						
 						// Past Sponsors
 						if !pastSponsors.isEmpty {
 							sponsorSection(
-								title: "Past Sponsors",
+								title: "过往赞助者",
 								icon: "heart.fill",
 								color: .secondary,
 								sponsors: pastSponsors,
@@ -158,11 +158,11 @@ struct SponsorsPageView: View {
                     .font(.system(size: 50))
                     .foregroundStyle(.secondary)
 
-                Text("Couldn't load sponsors")
+                Text("无法加载赞助者")
                     .font(.title2)
                     .fontWeight(.medium)
 
-                Button("Try Again") {
+                Button("重试") {
                     Task {
                         await sponsorManager.refreshSponsors()
                     }
@@ -173,12 +173,12 @@ struct SponsorsPageView: View {
                     .font(.system(size: 50))
                     .foregroundStyle(.secondary)
 
-                Text("Be the first sponsor!")
+                Text("成为第一位赞助者！")
                     .font(.title2)
                     .fontWeight(.medium)
 
                 if let url = URL(string: AppInfo.githubSponsors) {
-                    Link("Become a Sponsor", destination: url)
+                    Link("成为赞助者", destination: url)
                         .buttonStyle(.borderedProminent)
                         .tint(.pink)
                 }
@@ -246,7 +246,7 @@ struct SponsorCard: View {
                 HStack(spacing: 2) {
                     Image(systemName: hasSponsorPage ? "heart.fill" : "person.fill")
                         .font(.system(size: 8))
-                    Text(hasSponsorPage ? "Sponsor" : "Visit")
+                    Text(hasSponsorPage ? "赞助" : "访问")
                         .font(.system(size: 9, weight: .semibold))
                 }
                 .padding(.horizontal, 6)
@@ -368,7 +368,7 @@ struct ContributorCard: View {
                 HStack(spacing: 2) {
                     Image(systemName: hasSponsorPage ? "heart.fill" : "person.fill")
                         .font(.system(size: 8))
-                    Text(hasSponsorPage ? "Sponsor" : "Visit")
+                    Text(hasSponsorPage ? "赞助" : "访问")
                         .font(.system(size: 9, weight: .semibold))
                 }
                 .padding(.horizontal, 6)
@@ -418,4 +418,3 @@ struct ContributorCard: View {
         }
     }
 }
-

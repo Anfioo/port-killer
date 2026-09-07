@@ -42,27 +42,27 @@ struct PortDetailView: View {
             .padding()
         }
         .confirmationDialog(
-            "Kill Process",
+            "结束进程",
             isPresented: $showKillConfirmation
         ) {
-            Button("Kill Process", role: .destructive) {
+            Button("结束进程", role: .destructive) {
                 Task {
                     await appState.killPort(port)
                 }
             }
-            Button("Force Kill (SIGKILL)", role: .destructive) {
+            Button("强制结束（SIGKILL）", role: .destructive) {
                 Task {
                     await appState.killPort(port)
                 }
             }
-            Button("Deep Kill (+ Connections)", role: .destructive) {
+            Button("深度结束（含连接）", role: .destructive) {
                 Task {
                     await appState.killPortDeep(port)
                 }
             }
-            Button("Cancel", role: .cancel) {}
+            Button("取消", role: .cancel) {}
         } message: {
-            Text("Are you sure you want to kill \(port.processName) on port \(String(port.port))?")
+            Text("确定要结束端口 \(String(port.port)) 上的 \(port.processName) 吗？")
         }
     }
 
@@ -78,7 +78,7 @@ struct PortDetailView: View {
                         .lineLimit(1)
 
                     HStack(spacing: 4) {
-                        Text("Port \(String(port.port))")
+                        Text("端口 \(String(port.port))")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
 
@@ -107,7 +107,7 @@ struct PortDetailView: View {
                 if appState.isFavorite(port.port) {
                     HStack(spacing: 4) {
                         Image(systemName: "star.fill")
-                        Text("Favorite")
+                        Text("已收藏")
                     }
                     .font(.caption)
                     .padding(.horizontal, 8)
@@ -120,7 +120,7 @@ struct PortDetailView: View {
                 if appState.isWatching(port.port) {
                     HStack(spacing: 4) {
                         Image(systemName: "eye.fill")
-                        Text("Watching")
+                        Text("关注中")
                     }
                     .font(.caption)
                     .padding(.horizontal, 8)
@@ -138,11 +138,11 @@ struct PortDetailView: View {
     private var notesSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Text("Notes")
+                Text("备注")
                     .font(.headline)
                 Spacer()
                 if appState.portNote(for: port.port) != nil {
-                    Button("Clear") {
+                    Button("清除") {
                         appState.removePortNote(for: port.port)
                         noteDraft = ""
                     }
@@ -160,7 +160,7 @@ struct PortDetailView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 6))
                 .overlay(alignment: .topLeading) {
                     if noteDraft.isEmpty {
-                        Text("Add a note for port \(String(port.port))…")
+                        Text("为端口 \(String(port.port)) 添加备注…")
                             .foregroundStyle(.tertiary)
                             .padding(.horizontal, 11)
                             .padding(.vertical, 14)
@@ -187,13 +187,13 @@ struct PortDetailView: View {
             GridItem(.flexible()),
             GridItem(.flexible())
         ], alignment: .leading, spacing: 16) {
-            DetailRow(title: "Port", value: String(port.port))
-            DetailRow(title: "Label", value: appState.portLabel(for: port.port) ?? "—")
+            DetailRow(title: "端口", value: String(port.port))
+            DetailRow(title: "标签", value: appState.portLabel(for: port.port) ?? "—")
             DetailRow(title: "PID", value: String(port.pid))
-            DetailRow(title: "Address", value: port.address)
-            DetailRow(title: "User", value: port.user)
-            DetailRow(title: "File Descriptor", value: port.fd)
-            DetailRow(title: "Type", value: port.processType.rawValue)
+            DetailRow(title: "地址", value: port.address)
+            DetailRow(title: "用户", value: port.user)
+            DetailRow(title: "文件描述符", value: port.fd)
+            DetailRow(title: "类型", value: port.processType.rawValue)
         }
     }
 
@@ -206,7 +206,7 @@ struct PortDetailView: View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 6) {
                 Image(systemName: "globe").foregroundStyle(.orange)
-                Text("Exposed via Cloudflare Tunnel")
+                Text("通过 Cloudflare 隧道暴露")
                     .font(.headline)
                 Spacer()
             }
@@ -243,7 +243,7 @@ struct PortDetailView: View {
                                 .font(.caption)
                         }
                         .buttonStyle(.borderless)
-                        .help("Copy URL")
+                        .help("复制 URL")
                     }
                     .padding(.horizontal, 10)
                     .padding(.vertical, 6)
@@ -257,14 +257,14 @@ struct PortDetailView: View {
     private var commandSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Text("Command")
+                Text("命令")
                     .font(.headline)
                 Spacer()
                 Button {
                     NSPasteboard.general.clearContents()
                     NSPasteboard.general.setString(port.command, forType: .string)
                 } label: {
-                    Label("Copy", systemImage: "doc.on.doc")
+                    Label("复制", systemImage: "doc.on.doc")
                         .font(.caption)
                 }
                 .buttonStyle(.bordered)
@@ -286,7 +286,7 @@ struct PortDetailView: View {
 
     private var actionsSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Actions")
+            Text("操作")
                 .font(.headline)
 
             VStack(spacing: 8) {
@@ -300,7 +300,7 @@ struct PortDetailView: View {
                 Button(role: .destructive) {
                     showKillConfirmation = true
                 } label: {
-                    Text("Kill Process")
+                    Text("结束进程")
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.borderedProminent)
@@ -329,12 +329,12 @@ struct PortDetailView: View {
             } label: {
                 HStack {
                     Image(systemName: "cloud.fill")
-                    Text("Share via Tunnel")
+                    Text("通过隧道分享")
                 }
                 .frame(maxWidth: .infinity)
             }
             .buttonStyle(.bordered)
-            .help("Create a public URL for this port via Cloudflare Tunnel")
+            .help("通过 Cloudflare 隧道为此端口创建公开 URL")
         }
     }
 }

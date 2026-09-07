@@ -25,26 +25,26 @@ struct NamedTunnelsSection: View {
                 } else if !appState.namedTunnelManager.isLoggedIn {
                     placeholderMessage(
                         icon: "person.crop.circle.badge.exclamationmark",
-                        title: "Not logged in to Cloudflare",
-                        detail: "Run `cloudflared tunnel login` in Terminal to list account tunnels. Local tunnel credentials and config are still supported when present."
+                        title: "未登录 Cloudflare",
+                        detail: "在终端中运行 `cloudflared tunnel login` 以列出账户隧道。本地隧道凭证和配置在存在时仍受支持。"
                     )
                 } else {
                     placeholderMessage(
                         icon: "cloud",
-                        title: "No tunnels yet",
-                        detail: "Create one with `cloudflared tunnel create <name>` or via the Cloudflare dashboard."
+                        title: "暂无隧道",
+                        detail: "使用 `cloudflared tunnel create <name>` 或通过 Cloudflare 仪表盘创建一个。"
                     )
                 }
             } else {
                 if !running.isEmpty {
-                    sectionLabel("Running", count: running.count)
+                    sectionLabel("运行中", count: running.count)
                     ForEach(running) { tunnel in
                         NamedTunnelRow(tunnel: tunnel)
                         Divider().padding(.leading, 32)
                     }
                 }
                 if !available.isEmpty {
-                    sectionLabel("Available", count: available.count)
+                    sectionLabel("可用", count: available.count)
                     ForEach(available) { tunnel in
                         NamedTunnelRow(tunnel: tunnel)
                         Divider().padding(.leading, 32)
@@ -107,7 +107,7 @@ struct NamedTunnelsSection: View {
                         .font(.caption2.weight(.semibold))
                         .foregroundStyle(.secondary)
                         .rotationEffect(.degrees(managedElsewhereExpanded ? 90 : 0))
-                    Text("Managed Elsewhere")
+                    Text("其他位置管理")
                         .font(.caption.weight(.semibold))
                         .foregroundStyle(.secondary)
                         .textCase(.uppercase)
@@ -152,9 +152,9 @@ struct NamedTunnelsSection: View {
                 .font(.title3)
                 .foregroundStyle(.orange)
             VStack(alignment: .leading, spacing: 3) {
-                Text("Cloudflare account login not found")
+                Text("未找到 Cloudflare 账户登录")
                     .font(.caption.weight(.semibold))
-                Text("Showing locally configured tunnels only. Run `cloudflared tunnel login` to discover all account tunnels.")
+                Text("仅显示本地配置的隧道。运行 `cloudflared tunnel login` 以发现所有账户隧道。")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -168,7 +168,7 @@ struct NamedTunnelsSection: View {
     private var discoveringRow: some View {
         HStack(spacing: 8) {
             ProgressView().controlSize(.small)
-            Text("Discovering tunnels…")
+            Text("正在发现隧道…")
                 .font(.callout)
                 .foregroundStyle(.secondary)
             Spacer()
@@ -206,7 +206,7 @@ struct NamedTunnelRow: View {
             Spacer(minLength: 8)
 
             if tunnel.status == .running {
-                Text("\(tunnel.activeConnectionCount) conn")
+                Text("\(tunnel.activeConnectionCount) 连接")
                     .font(.caption.monospacedDigit())
                     .foregroundStyle(.secondary)
             }
@@ -246,13 +246,13 @@ struct NamedTunnelRow: View {
         if tunnel.status == .error, let error = tunnel.lastError {
             Text(error).font(.caption).foregroundStyle(.red).lineLimit(1)
         } else if tunnel.status == .starting {
-            Text("Starting…").font(.caption).foregroundStyle(.secondary)
+            Text("正在启动…").font(.caption).foregroundStyle(.secondary)
         } else if tunnel.runSafety == .managedElsewhere {
             HStack(spacing: 3) {
                 Image(systemName: "lock.fill")
                     .font(.caption2)
                     .foregroundStyle(.orange)
-                Text("Managed elsewhere")
+                Text("其他位置管理")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -269,7 +269,7 @@ struct NamedTunnelRow: View {
                 }
             }
         } else {
-            Text("No ingress configured").font(.caption).foregroundStyle(.tertiary)
+            Text("未配置入口规则").font(.caption).foregroundStyle(.tertiary)
         }
     }
 
@@ -281,12 +281,12 @@ struct NamedTunnelRow: View {
                 Button {
                     appState.namedTunnelManager.run(tunnel)
                 } label: {
-                    Label("Run", systemImage: "play.fill")
+                    Label("运行", systemImage: "play.fill")
                 }
                 .buttonStyle(.bordered)
                 .controlSize(.small)
                 .disabled(!appState.tunnelManager.isCloudflaredInstalled)
-                .help("Run this tunnel")
+                .help("运行此隧道")
             }
         case .starting, .stopping:
             ProgressView().controlSize(.small)
@@ -294,12 +294,12 @@ struct NamedTunnelRow: View {
             Button {
                 appState.namedTunnelManager.stop(tunnel)
             } label: {
-                Label("Stop", systemImage: "stop.fill")
+                Label("停止", systemImage: "stop.fill")
             }
             .buttonStyle(.bordered)
             .controlSize(.small)
             .tint(.red)
-            .help("Stop this tunnel")
+            .help("停止此隧道")
         }
     }
 
@@ -308,20 +308,20 @@ struct NamedTunnelRow: View {
         if tunnel.status == .running {
             Button(role: .destructive) {
                 appState.namedTunnelManager.stop(tunnel)
-            } label: { Label("Stop Tunnel", systemImage: "stop.fill") }
+            } label: { Label("停止隧道", systemImage: "stop.fill") }
         } else if tunnel.runSafety == .managedElsewhere {
             Button {
                 appState.namedTunnelManager.run(tunnel, allowManagedElsewhere: true)
-            } label: { Label("Run Anyway", systemImage: "play.fill") }
+            } label: { Label("仍要运行", systemImage: "play.fill") }
         } else if tunnel.runSafety != .managedElsewhere {
             Button {
                 appState.namedTunnelManager.run(tunnel)
-            } label: { Label("Run Tunnel", systemImage: "play.fill") }
+            } label: { Label("运行隧道", systemImage: "play.fill") }
         }
         Divider()
         Button {
             ClipboardService.copy(tunnel.tunnelID)
-        } label: { Label("Copy Tunnel ID", systemImage: "doc.on.doc") }
+        } label: { Label("复制隧道 ID", systemImage: "doc.on.doc") }
     }
 
     private var rowBackground: some View {

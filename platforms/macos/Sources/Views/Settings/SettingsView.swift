@@ -57,7 +57,7 @@ struct SettingsView: View {
                 )
 
                 // MARK: - Updates
-                SettingsGroup("Software Update", icon: "arrow.triangle.2.circlepath") {
+                SettingsGroup("软件更新", icon: "arrow.triangle.2.circlepath") {
                     VStack(spacing: 0) {
                         SettingsRowContainer {
                             HStack {
@@ -65,11 +65,11 @@ struct SettingsView: View {
                                     Text("PortKiller \(AppInfo.versionString)")
                                         .fontWeight(.medium)
                                     if let lastCheck = updateManager.lastUpdateCheckDate {
-                                        Text("Last checked \(lastCheck.formatted(.relative(presentation: .named)))")
+                                        Text("上次检查：\(lastCheck.formatted(.relative(presentation: .named)))")
                                             .font(.caption)
                                             .foregroundStyle(.secondary)
                                     } else {
-                                        Text("Never checked for updates")
+                                        Text("从未检查更新")
                                             .font(.caption)
                                             .foregroundStyle(.secondary)
                                     }
@@ -77,7 +77,7 @@ struct SettingsView: View {
 
                                 Spacer()
 
-                                Button("Check Now") {
+                                Button("立即检查") {
                                     updateManager.checkForUpdates()
                                 }
                                 .disabled(!updateManager.canCheckForUpdates)
@@ -87,8 +87,8 @@ struct SettingsView: View {
                         SettingsDivider()
 
                         SettingsToggleRow(
-                            title: "Check automatically",
-                            subtitle: "Look for updates in the background",
+                            title: "自动检查",
+                            subtitle: "在后台查找更新",
                             isOn: Binding(
                                 get: { updateManager.automaticallyChecksForUpdates },
                                 set: { updateManager.automaticallyChecksForUpdates = $0 }
@@ -98,8 +98,8 @@ struct SettingsView: View {
                         SettingsDivider()
 
                         SettingsToggleRow(
-                            title: "Download automatically",
-                            subtitle: "Download updates when available",
+                            title: "自动下载",
+                            subtitle: "有更新时自动下载",
                             isOn: Binding(
                                 get: { updateManager.automaticallyDownloadsUpdates },
                                 set: { updateManager.automaticallyDownloadsUpdates = $0 }
@@ -109,14 +109,14 @@ struct SettingsView: View {
                 }
 
                 // MARK: - Sponsors
-                SettingsGroup("Sponsors", icon: "heart.fill") {
+                SettingsGroup("赞助者", icon: "heart.fill") {
                     VStack(spacing: 0) {
                         SettingsRowContainer {
                             HStack {
                                 VStack(alignment: .leading, spacing: 2) {
-                                    Text("Show Sponsors Window")
+                                    Text("显示赞助者窗口")
                                         .fontWeight(.medium)
-                                    Text("How often to display the sponsors window")
+                                    Text("显示赞助者窗口的频率")
                                         .font(.caption)
                                         .foregroundStyle(.secondary)
                                 }
@@ -140,16 +140,16 @@ struct SettingsView: View {
                         SettingsRowContainer {
                             HStack {
                                 VStack(alignment: .leading, spacing: 2) {
-                                    Text("View Sponsors")
+                                    Text("查看赞助者")
                                         .fontWeight(.medium)
-                                    Text("See all current supporters")
+                                    Text("查看所有当前支持者")
                                         .font(.caption)
                                         .foregroundStyle(.secondary)
                                 }
 
                                 Spacer()
 
-                                Button("Show Window") {
+                                Button("显示窗口") {
                                     sponsorManager.showSponsorsWindow()
                                     openWindow(id: "sponsors")
                                 }
@@ -159,12 +159,12 @@ struct SettingsView: View {
                 }
 
                 // MARK: - About
-                SettingsGroup("About", icon: "info.circle.fill") {
+                SettingsGroup("关于", icon: "info.circle.fill") {
                     VStack(spacing: 0) {
                         SettingsRowContainer {
                             HStack {
                                 VStack(alignment: .leading, spacing: 2) {
-                                    Text("Developer")
+                                    Text("开发者")
                                         .fontWeight(.medium)
                                     Text("productdevbook")
                                         .font(.caption)
@@ -176,17 +176,17 @@ struct SettingsView: View {
 
                         SettingsDivider()
 
-                        SettingsLinkRow(title: "GitHub", subtitle: "Star the project", icon: "star.fill", url: AppInfo.githubRepo)
+                        SettingsLinkRow(title: "GitHub", subtitle: "为项目点星", icon: "star.fill", url: AppInfo.githubRepo)
                         SettingsDivider()
-                        SettingsLinkRow(title: "Sponsor", subtitle: "Support development", icon: "heart.fill", url: AppInfo.githubSponsors)
+                        SettingsLinkRow(title: "赞助", subtitle: "支持开发", icon: "heart.fill", url: AppInfo.githubSponsors)
                         SettingsDivider()
-                        SettingsLinkRow(title: "Report Issue", subtitle: "Found a bug?", icon: "ladybug.fill", url: AppInfo.githubIssues)
+                        SettingsLinkRow(title: "报告问题", subtitle: "发现 Bug？", icon: "ladybug.fill", url: AppInfo.githubIssues)
                         SettingsDivider()
                         SettingsLinkRow(title: "Twitter/X", subtitle: "@productdevbook", icon: "at", url: AppInfo.twitterURL)
                         SettingsDivider()
                         SettingsButtonRow(
-                            title: "Show Welcome Screen",
-                            subtitle: "Replay the onboarding wizard",
+                            title: "显示欢迎界面",
+                            subtitle: "重新播放引导向导",
                             icon: "hand.wave.fill",
                             action: {
                                 Defaults[.hasCompletedOnboarding] = false
