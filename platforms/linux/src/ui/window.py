@@ -469,3 +469,4 @@ class MenuBarWindow(Gtk.Window):
                 notify("结束失败", f"无法结束进程 {target}。")
             GLib.timeout_add(200, self.refresh_data)
 
+
