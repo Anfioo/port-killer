@@ -5,10 +5,16 @@
 #   - Windows : win-x64 自包含发布（无需安装 .NET Runtime），Compress-Archive 打包 zip
 #   - Linux   : x86_64 AppImage + 说明文件，打包 zip
 #
+# 产物双通道交付：
+#   1. Actions run 页面 Artifacts（保留 90 天）
+#   2. GitHub Release "nightly"（每次构建 --clobber 覆盖更新，长期保留）
+#
+# 三个平台 job 完全独立：任一平台构建失败不影响其他平台上传自己的 zip。
+#
 # 触发方式：
 #   1. 仓库 Actions 页 → “Build Artifacts (Zip)” → Run workflow（手动触发）
 #   2. 推送 main 且改动本文件时自动触发
-# 产物位置：Actions run 页面底部 Artifacts，直接下载。
+# 下载：https://github.com/Anfioo/port-killer/releases/tag/nightly
 
 name: Build Artifacts (Zip)
 
@@ -24,7 +30,7 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build-macos:
@@ -81,6 +87,14 @@ jobs:
           path: platforms/macos/PortKiller-macos-universal.zip
           if-no-files-found: error
 
+      - name: Upload to GitHub Release (nightly)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create nightly --repo "$GITHUB_REPOSITORY" --title "PortKiller 最新构建" --notes "由 Build Artifacts workflow 自动生成（简体中文构建）。" 2>/dev/null || true
+          gh release upload nightly PortKiller-macos-universal.zip --repo "$GITHUB_REPOSITORY" --clobber
+          echo "✅ macOS zip 已发布到 Release"
+
   build-windows:
     name: Windows (x64)
     runs-on: windows-latest
@@ -126,6 +140,14 @@ jobs:
           name: PortKiller-windows-x64
           path: PortKiller-windows-x64.zip
           if-no-files-found: error
+
+      - name: Upload to GitHub Release (nightly)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create nightly --repo "$GITHUB_REPOSITORY" --title "PortKiller 最新构建" --notes "由 Build Artifacts workflow 自动生成（简体中文构建）。" 2>$null
+          gh release upload nightly PortKiller-windows-x64.zip --repo "$GITHUB_REPOSITORY" --clobber
+          exit $LASTEXITCODE
 
   build-linux:
     name: Linux (x86_64 AppImage)
@@ -256,3 +278,11 @@ jobs:
           name: PortKiller-linux-x86_64
           path: PortKiller-linux-x86_64.zip
           if-no-files-found: error
+
+      - name: Upload to GitHub Release (nightly)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create nightly --repo "$GITHUB_REPOSITORY" --title "PortKiller 最新构建" --notes "由 Build Artifacts workflow 自动生成（简体中文构建）。" 2>/dev/null || true
+          gh release upload nightly PortKiller-linux-x86_64.zip --repo "$GITHUB_REPOSITORY" --clobber
+          echo "✅ Linux zip 已发布到 Release"
