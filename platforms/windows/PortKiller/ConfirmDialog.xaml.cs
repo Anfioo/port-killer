@@ -6,7 +6,7 @@ public partial class ConfirmDialog : Window
 {
     public bool Result { get; private set; }
 
-    public ConfirmDialog(string message, string details, string title = "Confirm Action")
+    public ConfirmDialog(string message, string details, string title = "确认操作")
     {
         InitializeComponent();
         TitleText.Text = title;
