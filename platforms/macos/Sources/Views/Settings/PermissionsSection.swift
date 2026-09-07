@@ -19,7 +19,7 @@ struct PermissionsSection: View {
     let onOpenNotificationSettings: () -> Void
 
     var body: some View {
-        SettingsGroup("Permissions", icon: "lock.shield.fill") {
+        SettingsGroup("权限", icon: "lock.shield.fill") {
             VStack(spacing: 0) {
                 // Accessibility Permission
                 SettingsRowContainer {
@@ -29,9 +29,9 @@ struct PermissionsSection: View {
                             .foregroundStyle(hasAccessibility ? .green : .orange)
 
                         VStack(alignment: .leading, spacing: 2) {
-                            Text("Accessibility")
+                            Text("辅助功能")
                                 .fontWeight(.medium)
-                            Text(hasAccessibility ? "Permission granted" : "Required for global shortcuts")
+                            Text(hasAccessibility ? "权限已授予" : "全局快捷键需要此权限")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                         }
@@ -39,7 +39,7 @@ struct PermissionsSection: View {
                         Spacer()
 
                         if hasAccessibility {
-                            Text("Granted")
+                            Text("已授予")
                                 .font(.caption)
                                 .foregroundStyle(.green)
                                 .padding(.horizontal, 8)
@@ -47,7 +47,7 @@ struct PermissionsSection: View {
                                 .background(.green.opacity(0.1))
                                 .clipShape(Capsule())
                         } else {
-                            Button("Grant Access") {
+                            Button("授予权限") {
                                 promptAccessibility()
                             }
                             .buttonStyle(.borderedProminent)
@@ -66,7 +66,7 @@ struct PermissionsSection: View {
                             .foregroundStyle(notificationStatusColor)
 
                         VStack(alignment: .leading, spacing: 2) {
-                            Text("Notifications")
+                            Text("通知")
                                 .fontWeight(.medium)
                             Text(notificationStatusText)
                                 .font(.caption)
@@ -76,7 +76,7 @@ struct PermissionsSection: View {
                         Spacer()
 
                         if notificationStatus == .authorized {
-                            Text("Enabled")
+                            Text("已启用")
                                 .font(.caption)
                                 .foregroundStyle(.green)
                                 .padding(.horizontal, 8)
@@ -84,13 +84,13 @@ struct PermissionsSection: View {
                                 .background(.green.opacity(0.1))
                                 .clipShape(Capsule())
                         } else if notificationStatus == .notDetermined {
-                            Button("Enable") {
+                            Button("启用") {
                                 onRequestNotification()
                             }
                             .buttonStyle(.borderedProminent)
                             .controlSize(.small)
                         } else {
-                            Button("Open Settings") {
+                            Button("打开设置") {
                                 onOpenNotificationSettings()
                             }
                             .controlSize(.small)
@@ -127,12 +127,12 @@ struct PermissionsSection: View {
     /// Returns descriptive text for notification status
     private var notificationStatusText: String {
         switch notificationStatus {
-        case .authorized: return "Alerts enabled for port watch"
-        case .denied: return "Notifications disabled in System Settings"
-        case .notDetermined: return "Required for port watch alerts"
-        case .provisional: return "Provisional notifications enabled"
-        case .ephemeral: return "Temporary notifications enabled"
-        @unknown default: return "Unknown status"
+        case .authorized: return "端口关注提醒已启用"
+        case .denied: return "系统设置中已禁用通知"
+        case .notDetermined: return "端口关注提醒需要此权限"
+        case .provisional: return "临时通知已启用"
+        case .ephemeral: return "临时通知已启用"
+        @unknown default: return "未知状态"
         }
     }
 }

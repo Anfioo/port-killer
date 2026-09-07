@@ -7,13 +7,13 @@ struct AutoKillSettingsSection: View {
     @State private var isAddingRule = false
 
     var body: some View {
-        SettingsGroup("Auto-Kill Rules", icon: "clock.badge.xmark") {
+        SettingsGroup("自动结束规则", icon: "clock.badge.xmark") {
             VStack(spacing: 0) {
                 SettingsRowContainer {
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("Automatically kill processes after a timeout")
+                        Text("超时后自动结束进程")
                             .fontWeight(.medium)
-                        Text("Rules are checked on each port scan cycle")
+                        Text("每个端口扫描周期都会检查规则")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
@@ -24,10 +24,10 @@ struct AutoKillSettingsSection: View {
                 if rules.isEmpty {
                     SettingsRowContainer {
                         HStack {
-                            Text("No rules configured")
+                            Text("未配置规则")
                                 .foregroundStyle(.secondary)
                             Spacer()
-                            Button("Add Rule") {
+                            Button("添加规则") {
                                 isAddingRule = true
                             }
                             .controlSize(.small)
@@ -46,7 +46,7 @@ struct AutoKillSettingsSection: View {
                     SettingsRowContainer {
                         HStack {
                             Spacer()
-                            Button("Add Rule") {
+                            Button("添加规则") {
                                 isAddingRule = true
                             }
                             .controlSize(.small)
@@ -56,7 +56,7 @@ struct AutoKillSettingsSection: View {
             }
         }
         .sheet(isPresented: $isAddingRule) {
-            AutoKillRuleEditor(rule: AutoKillRule(name: "New Rule")) { newRule in
+            AutoKillRuleEditor(rule: AutoKillRule(name: "新规则")) { newRule in
                 rules.append(newRule)
             }
         }
@@ -75,17 +75,17 @@ struct AutoKillSettingsSection: View {
                 VStack(alignment: .leading, spacing: 2) {
                     HStack(spacing: 6) {
                         StatusDot(color: rule.isEnabled ? Theme.Colors.statusSuccess : .secondary)
-                        Text(rule.name.isEmpty ? "Unnamed Rule" : rule.name)
+                        Text(rule.name.isEmpty ? "未命名规则" : rule.name)
                             .fontWeight(.medium)
                     }
                     HStack(spacing: 8) {
                         if !rule.processPattern.isEmpty {
-                            Text("Process: \(rule.processPattern)")
+                            Text("进程：\(rule.processPattern)")
                         }
                         if rule.port > 0 {
-                            Text("Port: \(rule.port)")
+                            Text("端口：\(rule.port)")
                         }
-                        Text("Timeout: \(rule.timeoutMinutes) min")
+                        Text("超时：\(rule.timeoutMinutes) 分钟")
                     }
                     .font(.caption)
                     .foregroundStyle(.secondary)
@@ -124,22 +124,22 @@ struct AutoKillRuleEditor: View {
     var body: some View {
         VStack(spacing: 0) {
             // Header
-            Text("Edit Auto-Kill Rule")
+            Text("编辑自动结束规则")
                 .font(.headline)
                 .padding(.top, 20)
 
             Form {
-                TextField("Rule Name", text: $rule.name)
+                TextField("规则名称", text: $rule.name)
 
-                Section("Match Criteria") {
-                    TextField("Process Pattern (e.g. node*, python*)", text: $rule.processPattern)
-                    TextField("Port (0 = any)", value: $rule.port, format: .number)
+                Section("匹配条件") {
+                    TextField("进程模式（如 node*, python*）", text: $rule.processPattern)
+                    TextField("端口（0 = 任意）", value: $rule.port, format: .number)
                 }
 
-                Section("Behavior") {
-                    Stepper("Timeout: \(rule.timeoutMinutes) minutes", value: $rule.timeoutMinutes, in: 1...1440)
-                    Toggle("Notify before killing", isOn: $rule.notifyBeforeKill)
-                    Toggle("Enabled", isOn: $rule.isEnabled)
+                Section("行为") {
+                    Stepper("超时：\(rule.timeoutMinutes) 分钟", value: $rule.timeoutMinutes, in: 1...1440)
+                    Toggle("结束前通知", isOn: $rule.notifyBeforeKill)
+                    Toggle("已启用", isOn: $rule.isEnabled)
                 }
             }
             .formStyle(.grouped)
@@ -147,14 +147,14 @@ struct AutoKillRuleEditor: View {
 
             // Actions
             HStack {
-                Button("Cancel") {
+                Button("取消") {
                     dismiss()
                 }
                 .keyboardShortcut(.cancelAction)
 
                 Spacer()
 
-                Button("Save") {
+                Button("保存") {
                     onSave(rule)
                     dismiss()
                 }

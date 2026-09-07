@@ -19,13 +19,13 @@ struct PortForwarderTableRow: View {
 
     private var statusText: String {
         if connection.portForwardStatus == .error || connection.proxyStatus == .error {
-            return "Error"
+            return "错误"
         } else if connection.isFullyConnected {
-            return "Connected"
+            return "已连接"
         } else if connection.portForwardStatus == .connecting || connection.proxyStatus == .connecting {
-            return "Connecting"
+            return "连接中"
         }
-        return "Stopped"
+        return "已停止"
     }
 
     private var isConnecting: Bool {
@@ -80,7 +80,7 @@ struct PortForwarderTableRow: View {
                             .foregroundStyle(.red)
                     }
                     .buttonStyle(.plain)
-                    .help("Stop")
+                    .help("停止")
                 } else {
                     Button {
                         appState.portForwardManager.startConnection(connection.id)
@@ -89,7 +89,7 @@ struct PortForwarderTableRow: View {
                             .foregroundStyle(.green)
                     }
                     .buttonStyle(.plain)
-                    .help("Start")
+                    .help("启动")
                 }
 
                 Button {
@@ -99,7 +99,7 @@ struct PortForwarderTableRow: View {
                         .foregroundStyle(.secondary)
                 }
                 .buttonStyle(.plain)
-                .help("Delete")
+                .help("删除")
             }
             .frame(width: 80, alignment: .center)
         }
@@ -116,26 +116,26 @@ struct PortForwarderTableRow: View {
                 Button {
                     appState.portForwardManager.stopConnection(connection.id)
                 } label: {
-                    Label("Stop", systemImage: "stop.fill")
+                    Label("停止", systemImage: "stop.fill")
                 }
             } else if isConnecting {
                 Button {
                     appState.portForwardManager.stopConnection(connection.id)
                 } label: {
-                    Label("Cancel", systemImage: "xmark")
+                    Label("取消", systemImage: "xmark")
                 }
             } else {
                 Button {
                     appState.portForwardManager.startConnection(connection.id)
                 } label: {
-                    Label("Start", systemImage: "play.fill")
+                    Label("启动", systemImage: "play.fill")
                 }
             }
 
             Button {
                 appState.portForwardManager.restartConnection(connection.id)
             } label: {
-                Label("Restart", systemImage: "arrow.clockwise")
+                Label("重启", systemImage: "arrow.clockwise")
             }
             .disabled(!connection.isFullyConnected)
 
@@ -144,7 +144,7 @@ struct PortForwarderTableRow: View {
             Button(role: .destructive) {
                 appState.portForwardManager.removeConnection(connection.id)
             } label: {
-                Label("Delete", systemImage: "trash")
+                Label("删除", systemImage: "trash")
             }
         }
     }

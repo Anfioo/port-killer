@@ -18,7 +18,7 @@ struct ConnectionInfoSection: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Label("Connection", systemImage: "link")
+            Label("连接", systemImage: "link")
                 .font(.subheadline.weight(.semibold))
                 .foregroundStyle(.secondary)
 
@@ -27,7 +27,7 @@ struct ConnectionInfoSection: View {
                     Image(systemName: "tag")
                         .foregroundStyle(.tertiary)
                         .frame(width: 16, height: 22, alignment: .center)
-                    TextField("Connection name", text: $name)
+                    TextField("连接名称", text: $name)
                         .textFieldStyle(.roundedBorder)
                 }
 
@@ -41,7 +41,7 @@ struct ConnectionInfoSection: View {
                         showNamespacePicker.toggle()
                     } label: {
                         HStack {
-                            Text(namespace.isEmpty ? "namespace" : namespace)
+                            Text(namespace.isEmpty ? "命名空间" : namespace)
                                 .foregroundStyle(namespace.isEmpty ? .tertiary : .primary)
                             Spacer()
                             if isLoadingNamespaces {
@@ -69,7 +69,7 @@ struct ConnectionInfoSection: View {
                             items: namespaces.map(\.name),
                             selection: namespace,
                             isLoading: isLoadingNamespaces,
-                            placeholder: "Search namespaces...",
+                            placeholder: "搜索命名空间...",
                             onSelect: { selected in
                                 namespace = selected
                                 onLoadServices(selected)
@@ -88,7 +88,7 @@ struct ConnectionInfoSection: View {
                         showServicePicker.toggle()
                     } label: {
                         HStack {
-                            Text(service.isEmpty ? "service" : service)
+                            Text(service.isEmpty ? "服务" : service)
                                 .foregroundStyle(service.isEmpty ? .tertiary : .primary)
                             Spacer()
                             if isLoadingServices {
@@ -115,7 +115,7 @@ struct ConnectionInfoSection: View {
                             items: services.map(\.name),
                             selection: service,
                             isLoading: isLoadingServices,
-                            placeholder: "Search services...",
+                            placeholder: "搜索服务...",
                             onSelect: { selected in
                                 service = selected
                                 // Auto-fill remote port
