@@ -116,7 +116,7 @@ class PortScanner:
                 continue
                 
             pid = 0
-            process_name = "Unknown"
+            process_name = "未知"
             found_proc = False
             
             if len(parts) >= 6:
@@ -144,7 +144,7 @@ class PortScanner:
                         'port': port,
                         'pid': pid,
                         'process_name': process_name,
-                        'command': "Unknown",
+                        'command': "未知",
                         'address': address
                     })
                 

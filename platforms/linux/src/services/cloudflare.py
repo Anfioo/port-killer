@@ -25,7 +25,7 @@ class CloudflareTunnel:
         
         if not cloudflared_bin:
             self.status = "error"
-            self.error = "cloudflared binary not found in PATH or standard locations."
+            self.error = "在 PATH 或标准位置中未找到 cloudflared 可执行文件。"
             return False
 
         try:
@@ -74,7 +74,7 @@ class CloudflareTunnel:
             returncode = self.process.returncode
             if self.status not in ("stopping", "stopped"):
                 self.status = "error"
-                self.error = last_error_line or f"Process exited with code {returncode}"
+                self.error = last_error_line or f"进程已退出，退出码 {returncode}"
 
     def stop(self):
         self.status = "stopping"
@@ -179,7 +179,7 @@ class CloudflareService:
                         "port": port,
                         "pid": pid,
                         "status": "active",
-                        "url": "External (check terminal)",
+                        "url": "外部（请查看终端）",
                         "command": cmd,
                     })
         except Exception as e:

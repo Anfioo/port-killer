@@ -97,7 +97,7 @@ class K8sService:
 
         # Parse Resource Name
         # E.g. "svc/my-service", "pod/my-pod", "deployment/my-dep", or just "my-pod"
-        resource = "Unknown Resource"
+        resource = "未知资源"
         cmd_tokens = cmd.split()
         if "port-forward" in cmd_tokens:
             start = cmd_tokens.index("port-forward") + 1

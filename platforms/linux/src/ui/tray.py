@@ -99,20 +99,20 @@ class PortKillerTrayApp:
             self.menu.remove(child)
 
         # 1. Cloudflare Tunnels Submenu
-        cf_label = f"☁️ Cloudflare Tunnels ({len(cf_tunnels)})"
+        cf_label = f"☁️ Cloudflare 隧道 ({len(cf_tunnels)})"
         cf_item = Gtk.MenuItem(label=cf_label)
         cf_submenu = Gtk.Menu()
         cf_item.set_submenu(cf_submenu)
         
         if not cf_tunnels:
-            no_cf = Gtk.MenuItem(label="No active tunnels")
+            no_cf = Gtk.MenuItem(label="无活动隧道")
             no_cf.set_sensitive(False)
             cf_submenu.append(no_cf)
         else:
             for t in cf_tunnels:
                 port_val = t.port if hasattr(t, 'port') else t.get('port', 0)
                 url_val = t.url if hasattr(t, 'url') else t.get('url', '')
-                t_label = f"Port {port_val} → {url_val if url_val else 'Starting...'}"
+                t_label = f"端口 {port_val} → {url_val if url_val else '启动中...'}"
                 
                 # Single tunnel options submenu
                 single_t_item = Gtk.MenuItem(label=t_label)
@@ -120,11 +120,11 @@ class PortKillerTrayApp:
                 single_t_item.set_submenu(single_t_submenu)
                 
                 if url_val:
-                    copy_url_item = Gtk.MenuItem(label="📋 Copy Tunnel URL")
-                    copy_url_item.connect("activate", lambda w, u=url_val: self.copy_and_notify(u, "Tunnel URL copied to clipboard!"))
+                    copy_url_item = Gtk.MenuItem(label="📋 复制隧道 URL")
+                    copy_url_item.connect("activate", lambda w, u=url_val: self.copy_and_notify(u, "隧道 URL 已复制到剪贴板！"))
                     single_t_submenu.append(copy_url_item)
                 
-                stop_tunnel_item = Gtk.MenuItem(label="💀 Stop Tunnel")
+                stop_tunnel_item = Gtk.MenuItem(label="💀 停止隧道")
                 stop_tunnel_item.connect("activate", lambda w, p=port_val: self.stop_cf_tunnel_and_notify(p))
                 single_t_submenu.append(stop_tunnel_item)
                 
@@ -132,13 +132,13 @@ class PortKillerTrayApp:
         self.menu.append(cf_item)
 
         # 2. K8s Port Forwards Submenu
-        k8s_label = f"☸️ K8s Port Forward ({len(k8s_forwards)})"
+        k8s_label = f"☸️ K8s 端口转发 ({len(k8s_forwards)})"
         k8s_item = Gtk.MenuItem(label=k8s_label)
         k8s_submenu = Gtk.Menu()
         k8s_item.set_submenu(k8s_submenu)
         
         if not k8s_forwards:
-            no_k8s = Gtk.MenuItem(label="No active port forwards")
+            no_k8s = Gtk.MenuItem(label="无活动端口转发")
             no_k8s.set_sensitive(False)
             k8s_submenu.append(no_k8s)
         else:
@@ -150,11 +150,11 @@ class PortKillerTrayApp:
                 single_k_submenu = Gtk.Menu()
                 single_k_item.set_submenu(single_k_submenu)
                 
-                copy_port_item = Gtk.MenuItem(label="📋 Copy Local Port")
-                copy_port_item.connect("activate", lambda w, p=k.local_port: self.copy_and_notify(str(p), f"Port {p} copied to clipboard!"))
+                copy_port_item = Gtk.MenuItem(label="📋 复制本地端口")
+                copy_port_item.connect("activate", lambda w, p=k.local_port: self.copy_and_notify(str(p), f"端口 {p} 已复制到剪贴板！"))
                 single_k_submenu.append(copy_port_item)
                 
-                stop_forward_item = Gtk.MenuItem(label="💀 Stop Port Forward")
+                stop_forward_item = Gtk.MenuItem(label="💀 停止端口转发")
                 stop_forward_item.connect("activate", lambda w, p=k.pid, r=k.resource: self.stop_k8s_forward_and_notify(p, r))
                 single_k_submenu.append(stop_forward_item)
                 
@@ -162,13 +162,13 @@ class PortKillerTrayApp:
         self.menu.append(k8s_item)
 
         # 3. Local Ports Submenu (Restored direct clicks to open management Dialog)
-        local_label = f"🌐 Local Ports ({len(ports)})"
+        local_label = f"🌐 本地端口 ({len(ports)})"
         local_item = Gtk.MenuItem(label=local_label)
         local_submenu = Gtk.Menu()
         local_item.set_submenu(local_submenu)
         
         if not ports:
-            no_ports = Gtk.MenuItem(label="No open ports")
+            no_ports = Gtk.MenuItem(label="无开放端口")
             no_ports.set_sensitive(False)
             local_submenu.append(no_ports)
         else:
@@ -186,17 +186,17 @@ class PortKillerTrayApp:
         self.menu.append(Gtk.SeparatorMenuItem())
 
         # Item 4: Open the searchable port browser window
-        window_item = Gtk.MenuItem(label="Open PortKiller Window")
+        window_item = Gtk.MenuItem(label="打开 PortKiller 窗口")
         window_item.connect("activate", lambda w: self.open_main_window())
         self.menu.append(window_item)
 
         # Item 5: Refresh Data
-        refresh_item = Gtk.MenuItem(label="Refresh Now")
+        refresh_item = Gtk.MenuItem(label="立即刷新")
         refresh_item.connect("activate", lambda w: self.refresh_and_build())
         self.menu.append(refresh_item)
 
         # Item 6: Quit
-        quit_item = Gtk.MenuItem(label="Quit PortKiller")
+        quit_item = Gtk.MenuItem(label="退出 PortKiller")
         quit_item.connect("activate", lambda w: self.quit())
         self.menu.append(quit_item)
 
@@ -221,18 +221,18 @@ class PortKillerTrayApp:
         
         if response == 1:  # Kill Process (SIGTERM)
             if PortScanner.kill_process(p['pid'], force=False):
-                notify("Process Terminated", f"Process on port {p['port']} terminated (SIGTERM).")
+                notify("进程已结束", f"端口 {p['port']} 上的进程已结束 (SIGTERM)。")
             else:
-                notify("Kill Failed", f"Could not terminate PID {p['pid']} on port {p['port']}.")
+                notify("结束失败", f"无法结束端口 {p['port']} 上的 PID {p['pid']}。")
         elif response == 2:  # Force Kill (SIGKILL)
             if PortScanner.kill_process(p['pid'], force=True):
-                notify("Process Killed", f"Process on port {p['port']} force killed (SIGKILL).")
+                notify("进程已强制结束", f"端口 {p['port']} 上的进程已被强制结束 (SIGKILL)。")
             else:
-                notify("Kill Failed", f"Could not kill PID {p['pid']} on port {p['port']}.")
+                notify("结束失败", f"无法强制结束端口 {p['port']} 上的 PID {p['pid']}。")
         elif response == 3:  # Copy PID
-            self.copy_and_notify(str(p['pid']), f"PID {p['pid']} copied to clipboard!")
+            self.copy_and_notify(str(p['pid']), f"PID {p['pid']} 已复制到剪贴板！")
         elif response == 4:  # Copy Port
-            self.copy_and_notify(str(p['port']), f"Port {p['port']} copied to clipboard!")
+            self.copy_and_notify(str(p['port']), f"端口 {p['port']} 已复制到剪贴板！")
             
         dialog.destroy()
         # Refresh lists soon after closing/killing
@@ -240,18 +240,18 @@ class PortKillerTrayApp:
 
     def copy_and_notify(self, text, message):
         copy_to_clipboard(text)
-        notify("Action Done", message)
+        notify("操作完成", message)
 
     def stop_cf_tunnel_and_notify(self, port):
         cloudflare_service.stop_tunnel(port)
-        notify("Tunnel Stopped", f"Cloudflare Tunnel on port {port} stopped!")
+        notify("隧道已停止", f"端口 {port} 上的 Cloudflare 隧道已停止！")
         GLib.timeout_add(200, self.refresh_and_build)
 
     def stop_k8s_forward_and_notify(self, pid, resource):
         if k8s_service.stop_port_forward(pid):
-            notify("Port Forward Stopped", f"Kubernetes port-forward for {resource} stopped!")
+            notify("端口转发已停止", f"{resource} 的 Kubernetes 端口转发已停止！")
         else:
-            notify("Port Forward Failed", f"Could not stop port-forward for {resource} (PID {pid}).")
+            notify("端口转发停止失败", f"无法停止 {resource} 的端口转发 (PID {pid})。")
         GLib.timeout_add(200, self.refresh_and_build)
 
     def auto_refresh(self):
