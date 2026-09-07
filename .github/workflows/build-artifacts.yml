@@ -219,7 +219,7 @@ jobs:
           file "$FILE"
 
           # Confirm the payload is actually in there
-          ./".$FILE" --appimage-extract >/dev/null
+          ./"$FILE" --appimage-extract >/dev/null
           [ -f squashfs-root/usr/share/port-killer/port-killer.py ] || { echo "Missing entry point"; exit 1; }
           [ -f squashfs-root/usr/share/port-killer/src/ui/tray.py ] || { echo "Missing src/"; exit 1; }
           [ -x squashfs-root/AppRun ] || { echo "AppRun not executable"; exit 1; }
