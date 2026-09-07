@@ -112,7 +112,7 @@ struct ConnectionEditSection: View {
                         .rotationEffect(.degrees(isExpanded ? 90 : 0))
                         .font(.caption.weight(.semibold))
                         .foregroundStyle(.secondary)
-                    Text("Configuration")
+                    Text("配置")
                         .font(.headline)
                 }
             }
@@ -208,13 +208,13 @@ struct ConnectionEditSection: View {
 
     private var statusText: String {
         if connection.portForwardStatus == .error || connection.proxyStatus == .error {
-            return "Error"
+            return "错误"
         } else if connection.isFullyConnected {
-            return "Connected"
+            return "已连接"
         } else if connection.portForwardStatus == .connecting || connection.proxyStatus == .connecting {
-            return "Connecting"
+            return "连接中"
         }
-        return "Stopped"
+        return "已停止"
     }
 
     // MARK: - Persistence

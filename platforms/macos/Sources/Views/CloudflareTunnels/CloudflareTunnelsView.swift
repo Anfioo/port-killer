@@ -48,7 +48,7 @@ struct CloudflareTunnelsView: View {
 
     private var header: some View {
         HStack(spacing: 8) {
-            Text("Cloudflare Tunnels")
+            Text("Cloudflare 隧道")
                 .font(.headline)
 
             Spacer()
@@ -63,7 +63,7 @@ struct CloudflareTunnelsView: View {
                 }
             }
             .buttonStyle(.borderless)
-            .help("Refresh tunnel list")
+            .help("刷新隧道列表")
             .disabled(appState.namedTunnelManager.isDiscovering)
 
             if appState.namedTunnelManager.runningCount > 0 || appState.tunnelManager.activeTunnelCount > 0 {
@@ -71,12 +71,12 @@ struct CloudflareTunnelsView: View {
                     if appState.namedTunnelManager.runningCount > 0 {
                         Button(role: .destructive) {
                             Task { await appState.namedTunnelManager.stopAll() }
-                        } label: { Label("Stop All My Tunnels", systemImage: "stop.fill") }
+                        } label: { Label("停止我的全部隧道", systemImage: "stop.fill") }
                     }
                     if appState.tunnelManager.activeTunnelCount > 0 {
                         Button(role: .destructive) {
                             Task { await appState.tunnelManager.stopAllTunnels() }
-                        } label: { Label("Stop All Quick Tunnels", systemImage: "stop.fill") }
+                        } label: { Label("停止全部快速隧道", systemImage: "stop.fill") }
                     }
                 } label: {
                     Image(systemName: "ellipsis.circle")
@@ -84,7 +84,7 @@ struct CloudflareTunnelsView: View {
                 .menuStyle(.borderlessButton)
                 .menuIndicator(.hidden)
                 .fixedSize()
-                .help("More actions")
+                .help("更多操作")
             }
         }
         .padding(.horizontal, 12)
@@ -94,8 +94,8 @@ struct CloudflareTunnelsView: View {
 
     private func statusSummary(running: Int, quick: Int) -> String {
         var parts: [String] = []
-        if running > 0 { parts.append("\(running) running") }
-        if quick > 0 { parts.append("\(quick) quick") }
+        if running > 0 { parts.append("\(running) 个运行中") }
+        if quick > 0 { parts.append("\(quick) 个快速") }
         return parts.joined(separator: " · ")
     }
 
@@ -109,7 +109,7 @@ struct CloudflareTunnelsView: View {
                 StatusDot(color: Theme.Colors.statusSuccess)
                 Text(statusSummary(running: running, quick: quick))
             } else {
-                Text("No active tunnels")
+                Text("暂无活动隧道")
             }
 
             Spacer()
@@ -117,7 +117,7 @@ struct CloudflareTunnelsView: View {
             if appState.tunnelManager.isCloudflaredInstalled {
                 Image(systemName: "checkmark.circle.fill")
                     .foregroundStyle(.green)
-                Text("cloudflared installed")
+                Text("cloudflared 已安装")
             }
         }
         .font(.caption)
@@ -132,7 +132,7 @@ struct CloudflareTunnelsView: View {
     @ViewBuilder
     private var quickTunnelsSection: some View {
         HStack(spacing: 6) {
-            Text("Quick Tunnels")
+            Text("快速隧道")
                 .font(.caption.weight(.semibold))
                 .foregroundStyle(.secondary)
                 .textCase(.uppercase)
@@ -169,7 +169,7 @@ struct CloudflareTunnelRow: View {
 
                 // Port info
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Port " + String(tunnel.port))
+                    Text("端口 " + String(tunnel.port))
                         .font(.headline)
 
                     if let url = tunnel.tunnelURL {
@@ -178,7 +178,7 @@ struct CloudflareTunnelRow: View {
                             .foregroundStyle(.blue)
                             .lineLimit(1)
                     } else if tunnel.status == .starting {
-                        Text("Starting tunnel...")
+                        Text("正在启动隧道...")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     } else if let error = tunnel.lastError {
@@ -207,7 +207,7 @@ struct CloudflareTunnelRow: View {
                         .foregroundColor(showLogs ? .accentColor : .secondary)
                 }
                 .buttonStyle(.plain)
-                .help(showLogs ? "Hide logs" : "Show logs")
+                .help(showLogs ? "隐藏日志" : "显示日志")
 
                 // Stop button
                 Button {
@@ -217,7 +217,7 @@ struct CloudflareTunnelRow: View {
                         .foregroundStyle(.red)
                 }
                 .buttonStyle(.plain)
-                .help("Stop tunnel")
+                .help("停止隧道")
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 10)
@@ -234,21 +234,21 @@ struct CloudflareTunnelRow: View {
             if tunnel.status == .active, let url = tunnel.tunnelURL {
                 Button {
                     ClipboardService.copy(url)
-                } label: { Label("Copy URL", systemImage: "doc.on.doc") }
+                } label: { Label("复制 URL", systemImage: "doc.on.doc") }
                 Button {
                     if let tunnelURL = URL(string: url) {
                         NSWorkspace.shared.open(tunnelURL)
                     }
-                } label: { Label("Open in Browser", systemImage: "globe") }
+                } label: { Label("在浏览器中打开", systemImage: "globe") }
                 Divider()
             }
             Button {
                 showLogs.toggle()
-            } label: { Label(showLogs ? "Hide Logs" : "Show Logs", systemImage: "doc.text") }
+            } label: { Label(showLogs ? "隐藏日志" : "显示日志", systemImage: "doc.text") }
             Divider()
             Button(role: .destructive) {
                 appState.tunnelManager.stopTunnel(id: tunnel.id)
-            } label: { Label("Stop Tunnel", systemImage: "stop.fill") }
+            } label: { Label("停止隧道", systemImage: "stop.fill") }
         }
     }
 
@@ -272,7 +272,7 @@ struct CloudflareTunnelRow: View {
             }
             .buttonStyle(.bordered)
             .controlSize(.small)
-            .help("Copy URL")
+            .help("复制 URL")
 
             Button {
                 if let url = tunnel.tunnelURL, let tunnelURL = URL(string: url) {
@@ -283,7 +283,7 @@ struct CloudflareTunnelRow: View {
             }
             .buttonStyle(.bordered)
             .controlSize(.small)
-            .help("Open in Browser")
+            .help("在浏览器中打开")
         }
     }
 }

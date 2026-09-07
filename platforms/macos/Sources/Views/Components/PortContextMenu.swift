@@ -93,7 +93,7 @@ struct PortContextMenu: View {
             appState.toggleFavorite(port.port)
         } label: {
             Label(
-                appState.isFavorite(port.port) ? "Remove from Favorites" : "Add to Favorites",
+                appState.isFavorite(port.port) ? "取消收藏" : "加入收藏",
                 systemImage: appState.isFavorite(port.port) ? "star.slash" : "star"
             )
         }
@@ -102,7 +102,7 @@ struct PortContextMenu: View {
             appState.toggleWatch(port.port)
         } label: {
             Label(
-                appState.isWatching(port.port) ? "Stop Watching" : "Watch Port",
+                appState.isWatching(port.port) ? "取消关注" : "关注端口",
                 systemImage: appState.isWatching(port.port) ? "eye.slash" : "eye"
             )
         }
@@ -113,7 +113,7 @@ struct PortContextMenu: View {
             promptForPortLabel(port: port.port)
         } label: {
             Label(
-                appState.portLabel(for: port.port) != nil ? "Edit Label" : "Set Label",
+                appState.portLabel(for: port.port) != nil ? "编辑标签" : "设置标签",
                 systemImage: "pencil"
             )
         }
@@ -122,7 +122,7 @@ struct PortContextMenu: View {
             Button {
                 appState.removePortLabel(for: port.port)
             } label: {
-                Label("Remove Label", systemImage: "pencil.slash")
+                Label("移除标签", systemImage: "pencil.slash")
             }
         }
 
@@ -130,7 +130,7 @@ struct PortContextMenu: View {
             promptForPortNote(port: port.port)
         } label: {
             Label(
-                appState.portNote(for: port.port) != nil ? "Edit Note" : "Add Note",
+                appState.portNote(for: port.port) != nil ? "编辑备注" : "添加备注",
                 systemImage: "note.text"
             )
         }
@@ -139,7 +139,7 @@ struct PortContextMenu: View {
             Button {
                 appState.removePortNote(for: port.port)
             } label: {
-                Label("Remove Note", systemImage: "trash")
+                Label("删除备注", systemImage: "trash")
             }
         }
     }
@@ -165,11 +165,11 @@ struct PortContextMenu: View {
                 Button {
                     appState.clearProcessTypeOverride(processName: port.processName)
                 } label: {
-                    Label("Reset to Auto", systemImage: "arrow.counterclockwise")
+                    Label("重置为自动", systemImage: "arrow.counterclockwise")
                 }
             }
         } label: {
-            Label("Set Process Type", systemImage: "tag")
+            Label("设置进程类型", systemImage: "tag")
         }
     }
 
@@ -180,7 +180,7 @@ struct PortContextMenu: View {
                 NSPasteboard.general.clearContents()
                 NSPasteboard.general.setString(String(port.port), forType: .string)
             } label: {
-                Label("Copy Port Number", systemImage: "doc.on.doc")
+                Label("复制端口号", systemImage: "doc.on.doc")
             }
         }
 
@@ -189,7 +189,7 @@ struct PortContextMenu: View {
                 NSPasteboard.general.clearContents()
                 NSPasteboard.general.setString(port.command, forType: .string)
             } label: {
-                Label("Copy Command", systemImage: "doc.on.doc")
+                Label("复制命令", systemImage: "doc.on.doc")
             }
         }
     }
@@ -201,7 +201,7 @@ struct PortContextMenu: View {
                 await appState.killPort(port)
             }
         } label: {
-            Label("Kill Process", systemImage: "xmark.circle")
+            Label("结束进程", systemImage: "xmark.circle")
         }
         .keyboardShortcut(.delete, modifiers: [])
 
@@ -210,7 +210,7 @@ struct PortContextMenu: View {
                 await appState.killPortDeep(port)
             }
         } label: {
-            Label("Deep Kill (+ Connections)", systemImage: "xmark.circle.fill")
+            Label("深度结束（含连接）", systemImage: "xmark.circle.fill")
         }
     }
 
@@ -221,7 +221,7 @@ struct PortContextMenu: View {
                 NSWorkspace.shared.open(url)
             }
         } label: {
-            Label("Open in Browser", systemImage: "globe.fill")
+            Label("在浏览器中打开", systemImage: "globe.fill")
         }
         .keyboardShortcut("o", modifiers: .command)
 
@@ -229,7 +229,7 @@ struct PortContextMenu: View {
             NSPasteboard.general.clearContents()
             NSPasteboard.general.setString("http://localhost:\(port.port)", forType: .string)
         } label: {
-            Label("Copy URL", systemImage: "document.on.clipboard")
+            Label("复制 URL", systemImage: "document.on.clipboard")
         }
     }
 
@@ -241,7 +241,7 @@ struct PortContextMenu: View {
                     Button {
                         ClipboardService.copy(url)
                     } label: {
-                        Label("Copy Tunnel URL", systemImage: "doc.on.doc")
+                        Label("复制隧道 URL", systemImage: "doc.on.doc")
                     }
 
                     Button {
@@ -249,27 +249,27 @@ struct PortContextMenu: View {
                             NSWorkspace.shared.open(tunnelURL)
                         }
                     } label: {
-                        Label("Open Tunnel URL", systemImage: "globe")
+                        Label("打开隧道 URL", systemImage: "globe")
                     }
                 }
 
                 Button {
                     appState.tunnelManager.stopTunnel(for: port.port)
                 } label: {
-                    Label("Stop Tunnel", systemImage: "icloud.slash")
+                    Label("停止隧道", systemImage: "icloud.slash")
                 }
             } else {
                 Button {
                     appState.tunnelManager.startTunnel(for: port.port, portInfoId: port.id)
                 } label: {
-                    Label("Share via Tunnel", systemImage: "cloud.fill")
+                    Label("通过隧道分享", systemImage: "cloud.fill")
                 }
             }
         } else {
             Button {
                 ClipboardService.copy("brew install cloudflared")
             } label: {
-                Label("Copy: brew install cloudflared", systemImage: "doc.on.doc")
+                Label("复制：brew install cloudflared", systemImage: "doc.on.doc")
             }
         }
     }
@@ -277,13 +277,13 @@ struct PortContextMenu: View {
     /// Prompts the user to set a custom label for a port via an NSAlert, then persists it.
     private func promptForPortLabel(port: Int) {
         let alert = NSAlert()
-        alert.messageText = "Set Label for Port \(port)"
-        alert.informativeText = "Enter a custom name to identify this port."
-        alert.addButton(withTitle: "Save")
-        alert.addButton(withTitle: "Cancel")
+        alert.messageText = "设置端口 \(port) 的标签"
+        alert.informativeText = "输入自定义名称以标识此端口。"
+        alert.addButton(withTitle: "保存")
+        alert.addButton(withTitle: "取消")
 
         let textField = NSTextField(frame: NSRect(x: 0, y: 0, width: 260, height: 24))
-        textField.placeholderString = "e.g., Frontend Dev Server"
+        textField.placeholderString = "例如：前端开发服务器"
         textField.stringValue = appState.portLabel(for: port) ?? ""
         alert.accessoryView = textField
         alert.window.initialFirstResponder = textField
@@ -297,10 +297,10 @@ struct PortContextMenu: View {
     /// multi-line text view, then persists it.
     private func promptForPortNote(port: Int) {
         let alert = NSAlert()
-        alert.messageText = "Note for Port \(port)"
-        alert.informativeText = "Add freeform notes about this port."
-        alert.addButton(withTitle: "Save")
-        alert.addButton(withTitle: "Cancel")
+        alert.messageText = "端口 \(port) 的备注"
+        alert.informativeText = "添加关于此端口的自由格式备注。"
+        alert.addButton(withTitle: "保存")
+        alert.addButton(withTitle: "取消")
 
         let scrollView = NSScrollView(frame: NSRect(x: 0, y: 0, width: 300, height: 100))
         scrollView.hasVerticalScroller = true
