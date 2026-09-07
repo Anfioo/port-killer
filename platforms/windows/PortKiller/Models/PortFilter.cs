@@ -88,18 +88,18 @@ public static class SidebarItemExtensions
 {
     public static string GetTitle(this SidebarItem item) => item switch
     {
-        SidebarItem.AllPorts => "All Ports",
-        SidebarItem.Favorites => "Favorites",
-        SidebarItem.Watched => "Watched",
-        SidebarItem.WebServer => "Web Server",
-        SidebarItem.Database => "Database",
-        SidebarItem.Development => "Development",
-        SidebarItem.System => "System",
-        SidebarItem.Other => "Other",
-        SidebarItem.KubernetesPortForward => "K8s Port Forward",
-        SidebarItem.CloudflareTunnels => "Cloudflare Tunnels",
-        SidebarItem.Settings => "Settings",
-        _ => "Unknown"
+        SidebarItem.AllPorts => "全部端口",
+        SidebarItem.Favorites => "收藏",
+        SidebarItem.Watched => "关注端口",
+        SidebarItem.WebServer => "Web 服务器",
+        SidebarItem.Database => "数据库",
+        SidebarItem.Development => "开发",
+        SidebarItem.System => "系统",
+        SidebarItem.Other => "其他",
+        SidebarItem.KubernetesPortForward => "K8s 端口转发",
+        SidebarItem.CloudflareTunnels => "Cloudflare 隧道",
+        SidebarItem.Settings => "设置",
+        _ => "未知"
     };
 
     public static string GetIcon(this SidebarItem item) => item switch

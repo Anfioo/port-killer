@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:helpers="clr-namespace:PortKiller.Helpers"
         mc:Ignorable="d"
-        Title="Cloudflare Tunnels" 
+        Title="Cloudflare 隧道" 
         Height="600" Width="900"
         WindowStartupLocation="CenterScreen"
         Background="#1A1A1A">
@@ -87,12 +87,12 @@
             <Grid>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                     <TextBlock Text="☁" FontSize="24" Margin="0,0,12,0" Foreground="#F4AB3A"/>
-                    <TextBlock Text="Cloudflare Tunnels" FontSize="20" FontWeight="SemiBold" Foreground="#E0E0E0" VerticalAlignment="Center"/>
+                    <TextBlock Text="Cloudflare 隧道" FontSize="20" FontWeight="SemiBold" Foreground="#E0E0E0" VerticalAlignment="Center"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,12,0">
-                        <TextBlock Text="Protocol" FontSize="12" Foreground="#A0A0A0" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBlock Text="协议" FontSize="12" Foreground="#A0A0A0" VerticalAlignment="Center" Margin="0,0,8,0"/>
                         <ComboBox Width="90"
                                   ItemsSource="{Binding ProtocolOptions}"
                                   SelectedValuePath="Value"
@@ -103,12 +103,12 @@
                                   BorderThickness="0"
                                   Padding="6,2"/>
                     </StackPanel>
-                    <Button Content="Stop All" 
+                    <Button Content="全部停止" 
                             Click="StopAllButton_Click"
                             Style="{StaticResource DangerButton}"
                             Visibility="{Binding Tunnels.Count, Converter={StaticResource BoolToVisibilityConverter}}"
                             Margin="0,0,8,0"/>
-                    <Button Content="Refresh" 
+                    <Button Content="刷新" 
                             Click="RefreshButton_Click"
                             Style="{StaticResource ModernButton}"/>
                 </StackPanel>
@@ -129,14 +129,14 @@
                 <StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                         <TextBlock Text="⚠" FontSize="20" Margin="0,0,12,0" Foreground="#f39c12"/>
-                        <TextBlock Text="cloudflared Not Installed" FontSize="16" FontWeight="Bold" Foreground="#f39c12" VerticalAlignment="Center"/>
+                        <TextBlock Text="cloudflared 未安装" FontSize="16" FontWeight="Bold" Foreground="#f39c12" VerticalAlignment="Center"/>
                     </StackPanel>
                     <TextBlock TextWrapping="Wrap" Foreground="#E0E0E0" Margin="32,0,0,8">
-                        To use Cloudflare Tunnels, you need to install cloudflared:
+                        要使用 Cloudflare 隧道，需要安装 cloudflared：
                     </TextBlock>
                     <TextBlock TextWrapping="Wrap" Foreground="#B0B0B0" Margin="32,0,0,0" FontFamily="Consolas" FontSize="11">
-                        • Download from: https://github.com/cloudflare/cloudflared/releases<LineBreak/>
-                        • Or use Chocolatey: choco install cloudflared
+                        • 下载地址：https://github.com/cloudflare/cloudflared/releases<LineBreak/>
+                        • 或使用 Chocolatey：choco install cloudflared
                     </TextBlock>
                 </StackPanel>
             </Border>
@@ -176,7 +176,7 @@
                                         <!-- Port and URL Info -->
                                         <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                             <TextBlock FontSize="18" FontWeight="Bold" Foreground="#E0E0E0" Margin="0,0,0,4">
-                                                <Run Text="Port"/>
+                                                <Run Text="端口"/>
                                                 <Run Text="{Binding Port}" Foreground="#3498db"/>
                                             </TextBlock>
                                             
@@ -238,7 +238,7 @@
                                             </Grid>
 
                                             <!-- Copy Button -->
-                                            <Button ToolTip="Copy URL"
+                                            <Button ToolTip="复制 URL"
                                                     Click="CopyButton_Click"
                                                     Tag="{Binding}"
                                                     Style="{StaticResource IconButton}"
@@ -248,7 +248,7 @@
                                             </Button>
 
                                             <!-- Open in Browser Button -->
-                                            <Button ToolTip="Open in Browser"
+                                            <Button ToolTip="在浏览器中打开"
                                                     Click="OpenButton_Click"
                                                     Tag="{Binding}"
                                                     Style="{StaticResource IconButton}"
@@ -258,7 +258,7 @@
                                             </Button>
 
                                             <!-- Stop Button -->
-                                            <Button ToolTip="Stop Tunnel"
+                                            <Button ToolTip="停止隧道"
                                                     Click="StopButton_Click"
                                                     Tag="{Binding}"
                                                     Style="{StaticResource IconButton}"
@@ -280,8 +280,8 @@
                         VerticalAlignment="Center"
                         Visibility="Collapsed">
                 <TextBlock Text="☁" FontSize="64" HorizontalAlignment="Center" Margin="0,0,0,16" Opacity="0.3" Foreground="#F4AB3A"/>
-                <TextBlock Text="No Active Tunnels" FontSize="20" Foreground="#A0A0A0" HorizontalAlignment="Center" FontWeight="SemiBold"/>
-                <TextBlock Text="Start a tunnel from the port list to create a public URL" 
+                <TextBlock Text="暂无活动隧道" FontSize="20" Foreground="#A0A0A0" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+                <TextBlock Text="从端口列表启动隧道以创建公共 URL" 
                            FontSize="13" 
                            Foreground="#808080" 
                            HorizontalAlignment="Center" 
@@ -293,7 +293,7 @@
                            HorizontalAlignment="Center" 
                            TextAlignment="Center"
                            MaxWidth="400">
-                    💡 Tip: Cloudflare Tunnels make your localhost ports accessible from anywhere on the internet with automatic HTTPS
+                    💡 提示：Cloudflare 隧道可让您的本地端口通过自动 HTTPS 从互联网任意位置访问
                 </TextBlock>
             </StackPanel>
         </Grid>
@@ -308,14 +308,14 @@
                              Margin="0,0,8,0"/>
                     <TextBlock FontSize="12" Foreground="#A0A0A0" VerticalAlignment="Center">
                         <Run Text="{Binding ActiveTunnelCount, Mode=OneWay}"/>
-                        <Run Text="active tunnel(s)"/>
+                        <Run Text="个活动隧道"/>
                     </TextBlock>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" 
                             Visibility="{Binding IsCloudflaredInstalled, Converter={StaticResource BoolToVisibilityConverter}}">
                     <TextBlock Text="✓" FontSize="14" Foreground="#2ecc71" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                    <TextBlock Text="cloudflared installed" FontSize="12" Foreground="#A0A0A0" VerticalAlignment="Center"/>
+                    <TextBlock Text="cloudflared 已安装" FontSize="12" Foreground="#A0A0A0" VerticalAlignment="Center"/>
                 </StackPanel>
             </Grid>
         </Border>

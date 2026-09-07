@@ -80,11 +80,11 @@ public class TunnelViewModel : INotifyPropertyChanged
         if (!IsCloudflaredInstalled)
         {
             MessageBox.Show(
-                "cloudflared is not installed. Please install it to use Cloudflare Tunnels.\n\n" +
-                "Installation options:\n" +
-                "1. Download from: https://github.com/cloudflare/cloudflared/releases\n" +
-                "2. Or use Chocolatey: choco install cloudflared",
-                "cloudflared Not Found",
+                "cloudflared 未安装。请安装后以使用 Cloudflare 隧道。\n\n" +
+                "安装方式：\n" +
+                "1. 下载地址：https://github.com/cloudflare/cloudflared/releases\n" +
+                "2. 或使用 Chocolatey：choco install cloudflared",
+                "cloudflared 未找到",
                 MessageBoxButton.OK,
                 MessageBoxImage.Warning);
             return;
@@ -123,8 +123,8 @@ public class TunnelViewModel : INotifyPropertyChanged
 
                 // Send notification
                 _notificationService.Notify(
-                    "Tunnel Active",
-                    $"Port {tunnel.Port} is now public at\n{ShortenUrl(url)}");
+                    "隧道已激活",
+                    $"端口 {tunnel.Port} 现已公开，地址：\n{ShortenUrl(url)}");
 
                 OnPropertyChanged(nameof(ActiveTunnelCount));
             });
@@ -164,8 +164,8 @@ public class TunnelViewModel : INotifyPropertyChanged
                 tunnel.LastError = ex.Message;
                 
                 MessageBox.Show(
-                    $"Failed to start tunnel for port {port}:\n{ex.Message}",
-                    "Tunnel Error",
+                    $"启动端口 {port} 的隧道失败：\n{ex.Message}",
+                    "隧道错误",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             });
@@ -226,7 +226,7 @@ public class TunnelViewModel : INotifyPropertyChanged
         try
         {
             Clipboard.SetText(url);
-            _notificationService.Notify("Copied", "Tunnel URL copied to clipboard");
+            _notificationService.Notify("已复制", "隧道 URL 已复制到剪贴板");
         }
         catch (Exception ex)
         {
@@ -250,8 +250,8 @@ public class TunnelViewModel : INotifyPropertyChanged
         catch (Exception ex)
         {
             MessageBox.Show(
-                $"Failed to open URL:\n{ex.Message}",
-                "Error",
+                $"打开 URL 失败：\n{ex.Message}",
+                "错误",
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);
         }

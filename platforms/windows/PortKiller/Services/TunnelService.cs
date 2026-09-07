@@ -84,7 +84,7 @@ public class TunnelService
     {
         var cloudflaredPath = CloudflaredPath;
         if (cloudflaredPath == null)
-            throw new InvalidOperationException("cloudflared is not installed");
+            throw new InvalidOperationException("cloudflared 未安装");
 
         var protocolArg = protocol.ToArgument();
         var process = new Process
@@ -127,7 +127,7 @@ public class TunnelService
 
             if (process.HasExited)
             {
-                throw new InvalidOperationException($"Cloudflared process exited with code {process.ExitCode}");
+                throw new InvalidOperationException($"cloudflared 进程已退出，退出码 {process.ExitCode}");
             }
 
             return process;
@@ -135,7 +135,7 @@ public class TunnelService
         catch (Exception ex)
         {
             _errorHandlers.TryGetValue(tunnel.Id, out var errorHandler);
-            errorHandler?.Invoke($"Failed to start tunnel: {ex.Message}");
+            errorHandler?.Invoke($"启动隧道失败：{ex.Message}");
             throw;
         }
     }
