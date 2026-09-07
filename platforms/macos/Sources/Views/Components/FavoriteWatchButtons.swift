@@ -42,13 +42,13 @@ struct FavoriteButton: View {
                     .foregroundStyle(isFavorite ? .yellow : .secondary)
             }
             .buttonStyle(.plain)
-            .help("Toggle favorite")
+            .help("切换收藏")
 
         case .labeled:
             Button {
                 appState.toggleFavorite(portNumber)
             } label: {
-                Text(isFavorite ? "Remove Favorite" : "Add Favorite")
+                Text(isFavorite ? "取消收藏" : "加入收藏")
                     .frame(maxWidth: .infinity)
             }
             .buttonStyle(.bordered)
@@ -82,13 +82,13 @@ struct WatchButton: View {
                     .foregroundStyle(isWatching ? .blue : .secondary)
             }
             .buttonStyle(.plain)
-            .help("Toggle watch")
+            .help("切换关注")
 
         case .labeled:
             Button {
                 appState.toggleWatch(portNumber)
             } label: {
-                Text(isWatching ? "Stop Watching" : "Watch")
+                Text(isWatching ? "取消关注" : "关注端口")
                     .frame(maxWidth: .infinity)
             }
             .buttonStyle(.bordered)

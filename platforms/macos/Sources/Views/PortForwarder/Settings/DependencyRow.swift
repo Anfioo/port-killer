@@ -24,7 +24,7 @@ struct DependencyRow: View {
                     HStack(spacing: 4) {
                         Image(systemName: "checkmark.circle.fill")
                             .foregroundStyle(.green)
-                        Text("Installed")
+                        Text("已安装")
                             .foregroundStyle(.secondary)
                     }
                 } else {
@@ -32,7 +32,7 @@ struct DependencyRow: View {
                         ProgressView()
                             .scaleEffect(0.7)
                     } else {
-                        Button("Install") {
+                        Button("安装") {
                             install()
                         }
                         .buttonStyle(.bordered)
@@ -40,7 +40,7 @@ struct DependencyRow: View {
                     }
 
                     if !dependency.isRequired {
-                        Text("(optional)")
+                        Text("（可选）")
                             .font(.caption)
                             .foregroundStyle(.tertiary)
                     }
@@ -57,25 +57,25 @@ struct DependencyRow: View {
                         .truncationMode(.middle)
 
                     if isCustom {
-                        Text("(custom)")
+                        Text("（自定义）")
                             .font(.caption2)
                             .foregroundStyle(.orange)
                     } else {
-                        Text("(auto)")
+                        Text("（自动）")
                             .font(.caption2)
                             .foregroundStyle(.tertiary)
                     }
 
                     Spacer()
 
-                    Button("Browse...") {
+                    Button("浏览...") {
                         browseForPath()
                     }
                     .buttonStyle(.borderless)
                     .controlSize(.small)
 
                     if isCustom {
-                        Button("Reset") {
+                        Button("重置") {
                             Defaults[customPathKey] = nil
                         }
                         .buttonStyle(.borderless)
@@ -98,7 +98,7 @@ struct DependencyRow: View {
 
     private func browseForPath() {
         let panel = NSOpenPanel()
-        panel.title = "Select \(name) executable"
+        panel.title = "选择 \(name) 可执行文件"
         panel.allowsMultipleSelection = false
         panel.canChooseDirectories = false
         panel.canChooseFiles = true

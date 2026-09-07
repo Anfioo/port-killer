@@ -12,7 +12,7 @@ struct PortForwarderToolbar: View {
             HStack {
                 Image(systemName: "magnifyingglass")
                     .foregroundStyle(.secondary)
-                TextField("Search...", text: $searchText)
+                TextField("搜索...", text: $searchText)
                     .textFieldStyle(.plain)
                 if !searchText.isEmpty {
                     Button {
@@ -36,7 +36,7 @@ struct PortForwarderToolbar: View {
                 Image(systemName: groupByNamespace ? "folder.fill" : "list.bullet")
             }
             .buttonStyle(.bordered)
-            .help(groupByNamespace ? "Show flat list" : "Group by namespace")
+            .help(groupByNamespace ? "显示扁平列表" : "按命名空间分组")
 
             Spacer()
 
@@ -46,7 +46,7 @@ struct PortForwarderToolbar: View {
                 Button {
                     manager.startAll()
                 } label: {
-                    Label("Start All", systemImage: "play.fill")
+                    Label("全部启动", systemImage: "play.fill")
                 }
                 .buttonStyle(.bordered)
                 .disabled(manager.allConnected)
@@ -54,7 +54,7 @@ struct PortForwarderToolbar: View {
                 Button {
                     manager.stopAll()
                 } label: {
-                    Label("Stop All", systemImage: "stop.fill")
+                    Label("全部停止", systemImage: "stop.fill")
                 }
                 .buttonStyle(.bordered)
                 .disabled(manager.connectedCount == 0)
@@ -62,15 +62,15 @@ struct PortForwarderToolbar: View {
                 Button {
                     Task { await manager.killStuckProcesses() }
                 } label: {
-                    Label("Force Stop", systemImage: "xmark.octagon.fill")
+                    Label("强制停止", systemImage: "xmark.octagon.fill")
                 }
                 .buttonStyle(.bordered)
-                .help("Kill all stuck kubectl/socat processes")
+                .help("终止所有卡住的 kubectl/socat 进程")
             }
 
             Button {
                 let config = PortForwardConnectionConfig(
-                    name: "New Connection",
+                    name: "新建连接",
                     namespace: "default",
                     service: "service-name",
                     localPort: 8080,
@@ -78,7 +78,7 @@ struct PortForwarderToolbar: View {
                 )
                 appState.portForwardManager.addConnection(config)
             } label: {
-                Label("Add", systemImage: "plus.circle.fill")
+                Label("添加", systemImage: "plus.circle.fill")
             }
             .buttonStyle(.bordered)
 
@@ -87,7 +87,7 @@ struct PortForwarderToolbar: View {
                 Task { await dm.loadNamespaces() }
                 discoveryManager = dm
             } label: {
-                Label("Import", systemImage: "square.and.arrow.down.fill")
+                Label("导入", systemImage: "square.and.arrow.down.fill")
             }
             .buttonStyle(.bordered)
             .disabled(!DependencyChecker.shared.allRequiredInstalled)

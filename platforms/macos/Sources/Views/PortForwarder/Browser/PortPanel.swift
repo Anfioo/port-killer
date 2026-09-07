@@ -11,7 +11,7 @@ struct PortPanel: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack {
-                Text("Port Configuration")
+                Text("端口配置")
                     .font(.headline)
                 Spacer()
             }
@@ -41,24 +41,24 @@ struct PortPanel: View {
                         if selectedPort != nil {
                             Divider()
 
-                            Toggle("Enable Proxy (socat)", isOn: $proxyEnabled)
+                            Toggle("启用代理 (socat)", isOn: $proxyEnabled)
 
                             let localPort = discoveryManager.suggestLocalPort(for: selectedPort?.port ?? 0)
                             let proxyPort = discoveryManager.suggestProxyPort(for: localPort)
 
                             VStack(alignment: .leading, spacing: 4) {
-                                Text("Local: \(localPort)")
+                                Text("本地：\(localPort)")
                                     .font(.caption)
                                 if proxyEnabled {
-                                    Text("Proxy: \(proxyPort)")
+                                    Text("代理：\(proxyPort)")
                                         .font(.caption)
                                 }
-                                Text("Connect to: localhost:\(proxyEnabled ? proxyPort : localPort)")
+                                Text("连接到：localhost:\(proxyEnabled ? proxyPort : localPort)")
                                     .font(.caption)
                                     .foregroundStyle(.green)
                             }
 
-                            Button("Add Connection", action: onAdd)
+                            Button("添加连接", action: onAdd)
                                 .buttonStyle(.borderedProminent)
                         }
                     }
@@ -67,7 +67,7 @@ struct PortPanel: View {
             } else {
                 VStack {
                     Spacer()
-                    Text("Select a service")
+                    Text("选择一个服务")
                         .foregroundStyle(.tertiary)
                     Spacer()
                 }

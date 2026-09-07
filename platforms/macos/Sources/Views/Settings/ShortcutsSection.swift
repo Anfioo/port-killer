@@ -20,15 +20,15 @@ struct ShortcutsSection: View {
     @State private var hasAccessibility = AXIsProcessTrusted()
 
     var body: some View {
-        SettingsGroup("Keyboard Shortcuts", icon: "command.square.fill") {
+        SettingsGroup("键盘快捷键", icon: "command.square.fill") {
             VStack(spacing: 0) {
                 // Toggle Main Window Shortcut
                 SettingsRowContainer {
                     HStack(spacing: 12) {
                         VStack(alignment: .leading, spacing: 2) {
-                            Text("Toggle Main Window")
+                            Text("切换主窗口")
                                 .fontWeight(.medium)
-                            Text("Show or hide the PortKiller window")
+                            Text("显示或隐藏 PortKiller 窗口")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                         }
@@ -45,7 +45,7 @@ struct ShortcutsSection: View {
                                 .font(.caption)
                         }
                         .buttonStyle(.borderless)
-                        .help("Reset to default (⌘⇧P)")
+                        .help("恢复默认（⌘⇧P）")
                     }
                 }
 
@@ -60,16 +60,16 @@ struct ShortcutsSection: View {
                                 .foregroundStyle(.orange)
 
                             VStack(alignment: .leading, spacing: 2) {
-                                Text("Accessibility Required")
+                                Text("需要辅助功能权限")
                                     .fontWeight(.medium)
-                                Text("Global shortcuts need Accessibility permission")
+                                Text("全局快捷键需要辅助功能权限")
                                     .font(.caption)
                                     .foregroundStyle(.secondary)
                             }
 
                             Spacer()
 
-                            Button("Grant Access") {
+                            Button("授予权限") {
                                 promptAccessibility()
                             }
                             .controlSize(.small)

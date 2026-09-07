@@ -37,7 +37,7 @@ struct MenuBarPortForwardRow: View {
                     } else {
                         Image(systemName: connection.isFullyConnected ? "stop.fill" : "play.fill")
                     }
-                    Text(connection.isFullyConnected ? "Stop" : "Start")
+                    Text(connection.isFullyConnected ? "停止" : "启动")
                 }
                 .font(.caption)
                 .foregroundStyle(connection.isFullyConnected ? .red : .green)
@@ -51,12 +51,12 @@ struct MenuBarPortForwardRow: View {
         .contentShape(Rectangle())
         .onHover { isHovered = $0 }
         .contextMenu {
-            Button { state.portForwardManager.restartConnection(connection.id) } label: { Label("Restart", systemImage: "arrow.clockwise") }
+            Button { state.portForwardManager.restartConnection(connection.id) } label: { Label("重启", systemImage: "arrow.clockwise") }
             Divider()
-            Button { if let url = URL(string: "http://localhost:" + String(connection.effectivePort)) { NSWorkspace.shared.open(url) } } label: { Label("Open in Browser", systemImage: "globe.fill") }
-            Button { NSPasteboard.general.clearContents(); NSPasteboard.general.setString("http://localhost:" + String(connection.effectivePort), forType: .string) } label: { Label("Copy URL", systemImage: "document.on.clipboard") }
+            Button { if let url = URL(string: "http://localhost:" + String(connection.effectivePort)) { NSWorkspace.shared.open(url) } } label: { Label("在浏览器中打开", systemImage: "globe.fill") }
+            Button { NSPasteboard.general.clearContents(); NSPasteboard.general.setString("http://localhost:" + String(connection.effectivePort), forType: .string) } label: { Label("复制 URL", systemImage: "document.on.clipboard") }
             Divider()
-            Button(role: .destructive) { state.portForwardManager.removeConnection(connection.id) } label: { Label("Remove", systemImage: "trash") }
+            Button(role: .destructive) { state.portForwardManager.removeConnection(connection.id) } label: { Label("移除", systemImage: "trash") }
         }
     }
 }
