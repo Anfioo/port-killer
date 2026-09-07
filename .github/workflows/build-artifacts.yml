@@ -1,0 +1,258 @@
+# Build Artifacts (Zip)
+#
+# 云端一键构建三端产物并打包成 zip，直接下载即用，无需本地编译：
+#   - macOS   : Universal (arm64 + x86_64) .app，ditto 打包 zip（ad-hoc 签名）
+#   - Windows : win-x64 自包含发布（无需安装 .NET Runtime），Compress-Archive 打包 zip
+#   - Linux   : x86_64 AppImage + 说明文件，打包 zip
+#
+# 触发方式：
+#   1. 仓库 Actions 页 → “Build Artifacts (Zip)” → Run workflow（手动触发）
+#   2. 推送 main 且改动本文件时自动触发
+# 产物位置：Actions run 页面底部 Artifacts，直接下载。
+
+name: Build Artifacts (Zip)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/build-artifacts.yml'
+
+concurrency:
+  group: build-artifacts-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build-macos:
+    name: macOS (Universal)
+    runs-on: macos-latest
+
+    defaults:
+      run:
+        working-directory: platforms/macos
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - name: Cache Swift Package Manager
+        uses: actions/cache@v4
+        with:
+          path: |
+            platforms/macos/.build
+            ~/Library/Caches/org.swift.swiftpm
+            /tmp/Sparkle-2.8.1
+          key: ${{ runner.os }}-spm-${{ hashFiles('platforms/macos/Package.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-spm-
+
+      - name: Build app bundle (Universal)
+        run: ./scripts/build-app.sh
+
+      - name: Verify bundle
+        run: |
+          APP=".build/apple/Products/Release/PortKiller.app"
+          [ -f "$APP/Contents/MacOS/PortKiller" ] || { echo "Missing executable"; exit 1; }
+          [ -f "$APP/Contents/Info.plist" ] || { echo "Missing Info.plist"; exit 1; }
+          [ -d "$APP/Contents/Frameworks/Sparkle.framework" ] || { echo "Missing Sparkle framework"; exit 1; }
+          INFO=$(lipo -info "$APP/Contents/MacOS/PortKiller")
+          echo "Binary Info: $INFO"
+          echo "$INFO" | grep "arm64" >/dev/null || { echo "Missing arm64"; exit 1; }
+          echo "$INFO" | grep "x86_64" >/dev/null || { echo "Missing x86_64"; exit 1; }
+
+      - name: Package zip
+        run: |
+          ditto -c -k --keepParent ".build/apple/Products/Release/PortKiller.app" "PortKiller-macos-universal.zip"
+          ls -lh PortKiller-macos-universal.zip
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PortKiller-macos-universal
+          path: platforms/macos/PortKiller-macos-universal.zip
+          if-no-files-found: error
+
+  build-windows:
+    name: Windows (x64)
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore platforms/windows/PortKiller/PortKiller.csproj
+
+      - name: Publish (self-contained win-x64)
+        run: |
+          dotnet publish platforms/windows/PortKiller/PortKiller.csproj `
+            -c Release `
+            -r win-x64 `
+            --self-contained true `
+            -o publish/win-x64
+
+      - name: Verify output
+        run: |
+          $exe = Get-ChildItem -Path publish/win-x64 -Recurse -Filter "PortKiller.exe" | Select-Object -First 1
+          if (-not $exe) {
+            Write-Error "PortKiller.exe missing from publish output!"
+            exit 1
+          }
+          Write-Host "OK: $($exe.FullName) ($([math]::Round($exe.Length / 1MB, 2)) MB)"
+
+      - name: Package zip
+        run: |
+          Compress-Archive -Path publish/win-x64/* -DestinationPath PortKiller-windows-x64.zip
+          $size = (Get-Item PortKiller-windows-x64.zip).Length / 1MB
+          Write-Host "zip size: $([math]::Round($size, 2)) MB"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PortKiller-windows-x64
+          path: PortKiller-windows-x64.zip
+          if-no-files-found: error
+
+  build-linux:
+    name: Linux (x86_64 AppImage)
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq \
+            python3 python3-gi python3-gi-cairo \
+            gir1.2-gtk-3.0 gir1.2-ayatanaappindicator3-0.1 \
+            librsvg2-bin desktop-file-utils file zip
+
+      - name: Build AppImage
+        run: |
+          APPDIR=AppDir
+
+          # Lay out the AppDir
+          mkdir -p "$APPDIR/usr/bin" "$APPDIR/usr/share/port-killer"
+          mkdir -p "$APPDIR/usr/share/applications"
+          mkdir -p "$APPDIR/usr/share/icons/hicolor/scalable/apps"
+
+          cp -r platforms/linux/src "$APPDIR/usr/share/port-killer/"
+          cp platforms/linux/port-killer.py "$APPDIR/usr/share/port-killer/"
+          chmod +x "$APPDIR/usr/share/port-killer/port-killer.py"
+
+          # Icon: AppImage needs it at the AppDir root as well as in the theme
+          cp platforms/macos/Resources/AppIcon.svg "$APPDIR/usr/share/icons/hicolor/scalable/apps/port-killer.svg"
+          cp platforms/macos/Resources/AppIcon.svg "$APPDIR/port-killer.svg"
+          rsvg-convert -w 256 -h 256 platforms/macos/Resources/AppIcon.svg -o "$APPDIR/port-killer.png"
+
+          cat > "$APPDIR/usr/share/applications/port-killer.desktop" <<'DESKTOP'
+          [Desktop Entry]
+          Type=Application
+          Name=PortKiller
+          Comment=Monitor listening ports and terminate processes from system tray
+          Exec=port-killer
+          Icon=port-killer
+          Terminal=false
+          Categories=Development;
+          StartupNotify=false
+          StartupWMClass=port-killer
+          DESKTOP
+          cp "$APPDIR/usr/share/applications/port-killer.desktop" "$APPDIR/port-killer.desktop"
+          desktop-file-validate "$APPDIR/port-killer.desktop"
+
+          # Launcher. The GTK stack is taken from the host rather than bundled:
+          # PyGObject binds tightly to the system GLib/GTK, and bundling them
+          # breaks on distros whose versions differ from the build image.
+          cat > "$APPDIR/usr/bin/port-killer" <<'LAUNCH'
+          #!/bin/bash
+          HERE="$(dirname "$(readlink -f "${0}")")"
+          APPROOT="$(dirname "$(dirname "$HERE")")"
+
+          for dep in "gi:python3-gi" "gi.repository.Gtk:gir1.2-gtk-3.0"; do
+              mod="${dep%%:*}"
+              if ! python3 -c "import ${mod%%.*}" 2>/dev/null; then
+                  echo "PortKiller: missing ${dep##*:}." >&2
+                  echo "Install the GTK Python bindings, e.g.:" >&2
+                  echo "  Debian/Ubuntu: sudo apt install python3-gi gir1.2-ayatanaappindicator3-0.1" >&2
+                  echo "  Fedora:        sudo dnf install python3-gobject libayatana-appindicator-gtk3" >&2
+                  echo "  Arch:          sudo pacman -S python-gobject libayatana-appindicator" >&2
+                  exit 1
+              fi
+          done
+
+          exec python3 "$APPROOT/usr/share/port-killer/port-killer.py" "$@"
+          LAUNCH
+          chmod +x "$APPDIR/usr/bin/port-killer"
+
+          # AppRun -> launcher
+          ln -s usr/bin/port-killer "$APPDIR/AppRun"
+
+          # Package
+          curl -fsSL -o appimagetool \
+            "https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage"
+          chmod +x appimagetool
+
+          ARCH=x86_64 ./appimagetool --appimage-extract-and-run \
+            "$APPDIR" "PortKiller-linux-x86_64.AppImage"
+
+      - name: Verify AppImage
+        run: |
+          FILE="PortKiller-linux-x86_64.AppImage"
+          [ -f "$FILE" ] || { echo "AppImage not produced"; exit 1; }
+          chmod +x "$FILE"
+          file "$FILE"
+
+          # Confirm the payload is actually in there
+          ./".$FILE" --appimage-extract >/dev/null
+          [ -f squashfs-root/usr/share/port-killer/port-killer.py ] || { echo "Missing entry point"; exit 1; }
+          [ -f squashfs-root/usr/share/port-killer/src/ui/tray.py ] || { echo "Missing src/"; exit 1; }
+          [ -x squashfs-root/AppRun ] || { echo "AppRun not executable"; exit 1; }
+          rm -rf squashfs-root
+          echo "AppImage verified"
+
+      - name: Package zip
+        run: |
+          cp PortKiller-linux-x86_64.AppImage .
+          cat > README-linux.txt <<'EOF'
+          PortKiller (Linux x86_64) - AppImage
+          ======================================
+
+          1. 解压后给 AppImage 加执行权限：
+             chmod +x PortKiller-linux-x86_64.AppImage
+
+          2. 直接运行：
+             ./PortKiller-linux-x86_64.AppImage
+
+          3. （可选）安装到桌面：
+             ./PortKiller-linux-x86_64.AppImage --appimage-extract
+             # 或使用 AppImageLauncher 集成
+
+          系统要求：python3 + GTK3 绑定（python3-gi、gir1.2-gtk-3.0、
+          gir1.2-ayatanaappindicator3-0.1），Ubuntu 22.04+ 默认满足。
+          中文字体建议安装 fonts-noto-cjk。
+          EOF
+          zip PortKiller-linux-x86_64.zip PortKiller-linux-x86_64.AppImage README-linux.txt
+          ls -lh PortKiller-linux-x86_64.zip
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PortKiller-linux-x86_64
+          path: PortKiller-linux-x86_64.zip
+          if-no-files-found: error
