@@ -48,9 +48,9 @@ public partial class CloudflareTunnelsView : Window
     private async void StopAllButton_Click(object sender, RoutedEventArgs e)
     {
         var dialog = new ConfirmDialog(
-            $"Are you sure you want to stop all {_viewModel.Tunnels.Count} tunnel(s)?",
-            "All public URLs will be terminated immediately.\n\nThis action cannot be undone.",
-            "Stop All Tunnels")
+            $"确定要停止全部 {_viewModel.Tunnels.Count} 个隧道吗？",
+            "所有公共 URL 将立即终止。\n\n此操作无法撤销。",
+            "停止全部隧道")
         {
             Owner = this
         };
