@@ -9,7 +9,7 @@ struct ServicePanel: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack {
-                Text("Services")
+                Text("服务")
                     .font(.headline)
                 Spacer()
                 Text("\(services.count)")
@@ -23,7 +23,7 @@ struct ServicePanel: View {
                 VStack {
                     Spacer()
                     ProgressView()
-                    Text("Loading...")
+                    Text("加载中...")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                     Spacer()
@@ -31,7 +31,7 @@ struct ServicePanel: View {
             } else if state == .idle {
                 VStack {
                     Spacer()
-                    Text("Select a namespace")
+                    Text("选择一个命名空间")
                         .foregroundStyle(.tertiary)
                     Spacer()
                 }
@@ -44,7 +44,7 @@ struct ServicePanel: View {
                                     VStack(alignment: .leading) {
                                         Text(svc.name)
                                             .font(.system(.body, design: .monospaced))
-                                        Text("\(svc.type) \u{00B7} \(svc.ports.count) ports")
+                                        Text("\(svc.type) \u{00B7} \(svc.ports.count) 个端口")
                                             .font(.caption)
                                             .foregroundStyle(.secondary)
                                     }

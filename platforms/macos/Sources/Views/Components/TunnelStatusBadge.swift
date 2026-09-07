@@ -20,13 +20,13 @@ struct TunnelStatusBadge: View {
                 } else if tunnel.status == .starting || tunnel.status == .stopping {
                     ProgressView()
                         .controlSize(.small)
-                    Text(tunnel.status == .starting ? "Starting tunnel..." : "Stopping...")
+                    Text(tunnel.status == .starting ? "隧道启动中..." : "停止中...")
                         .font(.body)
                         .foregroundStyle(.secondary)
                 } else if tunnel.status == .error {
                     Image(systemName: "exclamationmark.triangle.fill")
                         .foregroundStyle(.red)
-                    Text(tunnel.lastError ?? "Tunnel error")
+                    Text(tunnel.lastError ?? "隧道错误")
                         .font(.body)
                         .foregroundStyle(.red)
                         .lineLimit(1)
@@ -42,7 +42,7 @@ struct TunnelStatusBadge: View {
                     Image(systemName: "doc.on.doc")
                 }
                 .buttonStyle(.borderless)
-                .help("Copy tunnel URL")
+                .help("复制隧道 URL")
             }
 
             Button {
@@ -52,7 +52,7 @@ struct TunnelStatusBadge: View {
                     .foregroundStyle(tunnel.status == .active ? .red : .secondary)
             }
             .buttonStyle(.borderless)
-            .help(tunnel.status == .error ? "Dismiss" : "Stop tunnel")
+            .help(tunnel.status == .error ? "关闭" : "停止隧道")
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 8)

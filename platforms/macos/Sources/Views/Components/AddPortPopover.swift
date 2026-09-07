@@ -22,7 +22,7 @@ struct AddPortPopover: View {
     }
 
     private var title: String {
-        mode == .favorite ? "Add Favorite Port" : "Add Watched Port"
+        mode == .favorite ? "添加收藏端口" : "添加关注端口"
     }
 
     var body: some View {
@@ -30,7 +30,7 @@ struct AddPortPopover: View {
             Text(title)
                 .font(.headline)
 
-            TextField("Port (1-65535)", text: $portText)
+            TextField("端口（1-65535）", text: $portText)
                 .textFieldStyle(.roundedBorder)
                 .focused($isTextFieldFocused)
                 .onSubmit {
@@ -41,24 +41,24 @@ struct AddPortPopover: View {
 
             if mode == .watch {
                 VStack(alignment: .leading, spacing: 8) {
-                    Toggle("Notify when port starts", isOn: $notifyOnStart)
+                    Toggle("端口启动时通知", isOn: $notifyOnStart)
                         .toggleStyle(.checkbox)
 
-                    Toggle("Notify when port stops", isOn: $notifyOnStop)
+                    Toggle("端口停止时通知", isOn: $notifyOnStop)
                         .toggleStyle(.checkbox)
                 }
                 .padding(.vertical, 4)
             }
 
             HStack {
-                Button("Cancel") {
+                Button("取消") {
                     dismiss()
                 }
                 .keyboardShortcut(.escape, modifiers: [])
 
                 Spacer()
 
-                Button("Add") {
+                Button("添加") {
                     handleAdd()
                 }
                 .keyboardShortcut(.return, modifiers: [])

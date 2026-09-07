@@ -9,15 +9,15 @@ struct AddCustomNamespaceSheet: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            Text("Add Custom Namespace")
+            Text("添加自定义命名空间")
                 .font(.headline)
 
-            Text("Enter namespace names (comma-separated for multiple)")
+            Text("输入命名空间名称（多个用逗号分隔）")
                 .font(.caption)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
 
-            TextField("e.g., production, staging, dev", text: $namespaceInput)
+            TextField("例如：production, staging, dev", text: $namespaceInput)
                 .textFieldStyle(.roundedBorder)
                 .focused($isInputFocused)
                 .onSubmit {
@@ -25,14 +25,14 @@ struct AddCustomNamespaceSheet: View {
                 }
 
             HStack {
-                Button("Cancel") {
+                Button("取消") {
                     dismiss()
                 }
                 .keyboardShortcut(.cancelAction)
 
                 Spacer()
 
-                Button("Add") {
+                Button("添加") {
                     addNamespaces()
                 }
                 .keyboardShortcut(.defaultAction)

@@ -38,7 +38,7 @@ struct OnboardingView: View {
 
                 HStack(spacing: 12) {
                     if currentStep > 0 {
-                        Button("Back") {
+                        Button("上一步") {
                             withAnimation(.easeInOut(duration: 0.2)) {
                                 currentStep -= 1
                             }
@@ -47,13 +47,13 @@ struct OnboardingView: View {
                     }
 
                     if currentStep < totalSteps - 1 {
-                        Button("Skip") {
+                        Button("跳过") {
                             completeOnboarding()
                         }
                         .controlSize(.large)
                         .foregroundStyle(.secondary)
 
-                        Button("Next") {
+                        Button("下一步") {
                             withAnimation(.easeInOut(duration: 0.2)) {
                                 currentStep += 1
                             }
@@ -61,7 +61,7 @@ struct OnboardingView: View {
                         .controlSize(.large)
                         .buttonStyle(.borderedProminent)
                     } else {
-                        Button("Get Started") {
+                        Button("开始使用") {
                             completeOnboarding()
                         }
                         .controlSize(.large)
