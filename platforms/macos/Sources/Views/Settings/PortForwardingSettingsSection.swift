@@ -12,12 +12,12 @@ struct PortForwardingSettingsSection: View {
     @AppStorage("portForwardAutoStart") private var autoStart = false
 
     var body: some View {
-        SettingsGroup("Port Forwarding", icon: "point.3.connected.trianglepath.dotted") {
+        SettingsGroup("端口转发", icon: "point.3.connected.trianglepath.dotted") {
             VStack(spacing: 0) {
                 // Auto-start toggle
                 SettingsToggleRow(
-                    title: "Auto-start connections",
-                    subtitle: "Start all connections when app launches",
+                    title: "自动启动连接",
+                    subtitle: "应用启动时启动所有连接",
                     isOn: $autoStart
                 )
 
@@ -89,7 +89,7 @@ private struct DependencySettingsRow: View {
                             .fontWeight(.medium)
 
                         if !dependency.isRequired {
-                            Text("(optional)")
+                            Text("（可选）")
                                 .font(.caption)
                                 .foregroundStyle(.tertiary)
                         }
@@ -101,7 +101,7 @@ private struct DependencySettingsRow: View {
                         HStack(spacing: 4) {
                             Image(systemName: "checkmark.circle.fill")
                                 .foregroundStyle(.green)
-                            Text("Installed")
+                            Text("已安装")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                         }
@@ -109,7 +109,7 @@ private struct DependencySettingsRow: View {
                         HStack(spacing: 8) {
                             Image(systemName: "xmark.circle.fill")
                                 .foregroundStyle(.red)
-                            Text("Not found")
+                            Text("未找到")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
 
@@ -117,7 +117,7 @@ private struct DependencySettingsRow: View {
                                 ProgressView()
                                     .scaleEffect(0.7)
                             } else {
-                                Button("Install") {
+                                Button("安装") {
                                     install()
                                 }
                                 .buttonStyle(.bordered)
@@ -129,7 +129,7 @@ private struct DependencySettingsRow: View {
 
                 // Path input
                 HStack(spacing: 8) {
-                    TextField("Custom path (leave empty for auto)", text: $pathInput)
+                    TextField("自定义路径（留空自动检测）", text: $pathInput)
                         .textFieldStyle(.roundedBorder)
                         .font(.system(.caption, design: .monospaced))
                         .onAppear {
@@ -144,7 +144,7 @@ private struct DependencySettingsRow: View {
                         }
 
                     if !pathInput.isEmpty {
-                        Button("Clear") {
+                        Button("清除") {
                             pathInput = ""
                             Defaults[customPathKey] = nil
                         }
@@ -156,19 +156,19 @@ private struct DependencySettingsRow: View {
                 // Current path info
                 if let path = effectivePath {
                     HStack(spacing: 4) {
-                        Text("Using:")
+                        Text("使用中：")
                             .font(.caption)
                             .foregroundStyle(.tertiary)
                         Text(path)
                             .font(.system(.caption, design: .monospaced))
                             .foregroundStyle(.secondary)
-                        Text(isUsingCustom ? "(custom)" : "(auto)")
+                        Text(isUsingCustom ? "（自定义）" : "（自动）")
                             .font(.caption2)
                             .foregroundStyle(isUsingCustom ? Color.orange : Color.gray)
                     }
                 } else if let auto = autoPath {
                     HStack(spacing: 4) {
-                        Text("Auto-detected:")
+                        Text("自动检测到：")
                             .font(.caption)
                             .foregroundStyle(.tertiary)
                         Text(auto)

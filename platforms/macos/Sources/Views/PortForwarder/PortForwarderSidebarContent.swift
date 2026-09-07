@@ -125,12 +125,12 @@ struct PortForwarderSidebarContent: View {
 
     private var emptyState: some View {
         ContentUnavailableView {
-            Label("No Connections", systemImage: "point.3.connected.trianglepath.dotted")
+            Label("暂无连接", systemImage: "point.3.connected.trianglepath.dotted")
         } description: {
             if searchText.isEmpty {
-                Text("Add a connection or import from Kubernetes")
+                Text("添加连接或从 Kubernetes 导入")
             } else {
-                Text("No connections match '\(searchText)'")
+                Text("没有匹配 '\(searchText)' 的连接")
             }
         }
         .frame(maxHeight: .infinity)
@@ -148,7 +148,7 @@ struct AddConnectionButtons: View {
             // Manual add button
             Button {
                 let config = PortForwardConnectionConfig(
-                    name: "New Connection",
+                    name: "新建连接",
                     namespace: "default",
                     service: "service-name",
                     localPort: 8080,
@@ -158,7 +158,7 @@ struct AddConnectionButtons: View {
             } label: {
                 HStack(spacing: 6) {
                     Image(systemName: "plus.circle.fill")
-                    Text("Add Connection")
+                    Text("添加连接")
                 }
                 .foregroundStyle(.secondary)
             }
@@ -172,7 +172,7 @@ struct AddConnectionButtons: View {
             } label: {
                 HStack(spacing: 6) {
                     Image(systemName: "square.and.arrow.down")
-                    Text("Import from Kubernetes")
+                    Text("从 Kubernetes 导入")
                 }
                 .foregroundStyle(.blue)
             }

@@ -14,7 +14,7 @@ struct ServiceDetailView: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack {
-                Text("Service Details")
+                Text("服务详情")
                     .font(.caption)
                     .foregroundStyle(.secondary)
                 Spacer()
@@ -48,12 +48,12 @@ struct ServiceDetailView: View {
                     Divider()
 
                     // Port Selection
-                    Text("Select Port")
+                    Text("选择端口")
                         .font(.caption)
                         .foregroundStyle(.secondary)
 
                     if service.ports.isEmpty {
-                        Text("No ports defined")
+                        Text("未定义端口")
                             .font(.caption)
                             .foregroundStyle(.tertiary)
                     } else {
@@ -70,25 +70,25 @@ struct ServiceDetailView: View {
                     if selectedPort != nil {
                         Divider()
 
-                        Text("Port Configuration")
+                        Text("端口配置")
                             .font(.caption)
                             .foregroundStyle(.secondary)
 
                         VStack(alignment: .leading, spacing: 6) {
                             HStack {
-                                Text("Local port:")
+                                Text("本地端口：")
                                     .font(.caption)
                                     .foregroundStyle(.secondary)
                                 Text(String(suggestedLocalPort))
                                     .font(.system(.caption, design: .monospaced, weight: .medium))
                             }
 
-                            Toggle("Enable Proxy (socat)", isOn: $proxyEnabled)
+                            Toggle("启用代理 (socat)", isOn: $proxyEnabled)
                                 .toggleStyle(.checkbox)
 
                             if proxyEnabled {
                                 HStack {
-                                    Text("Proxy port:")
+                                    Text("代理端口：")
                                         .font(.caption)
                                         .foregroundStyle(.secondary)
                                     Text(String(suggestedProxyPort))
@@ -99,7 +99,7 @@ struct ServiceDetailView: View {
                             Divider()
 
                             HStack {
-                                Text("Connect to:")
+                                Text("连接到：")
                                     .font(.caption)
                                     .foregroundStyle(.secondary)
                                 Text("localhost:" + String(proxyEnabled ? suggestedProxyPort : suggestedLocalPort))

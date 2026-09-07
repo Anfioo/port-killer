@@ -14,7 +14,7 @@ struct MainWindowView: View {
                 .navigationSplitViewColumnWidth(min: 180, ideal: 220, max: 280)
         } content: {
             contentView
-                .searchable(text: $state.filter.searchText, prompt: "Search ports, processes...")
+                .searchable(text: $state.filter.searchText, prompt: "搜索端口或进程...")
                 .navigationSplitViewColumnWidth(min: 300, ideal: 400, max: .infinity)
         } detail: {
             detailView
@@ -30,17 +30,17 @@ struct MainWindowView: View {
             NSApp.activate(ignoringOtherApps: true)
         }
         .confirmationDialog(
-            "Kill All Processes",
+            "结束所有进程",
             isPresented: $showKillAllConfirmation
         ) {
-            Button("Kill All (\(appState.filteredPorts.count) processes)", role: .destructive) {
+            Button("结束全部（\(appState.filteredPorts.count) 个进程）", role: .destructive) {
                 Task {
                     await appState.killAll()
                 }
             }
-            Button("Cancel", role: .cancel) {}
+            Button("取消", role: .cancel) {}
         } message: {
-            Text("Are you sure you want to kill all \(appState.filteredPorts.count) processes? This action cannot be undone.")
+            Text("确定要结束全部 \(appState.filteredPorts.count) 个进程吗？此操作无法撤销。")
         }
         .onKeyPress(.delete) {
             if let port = appState.selectedPort {
@@ -106,18 +106,18 @@ struct MainWindowView: View {
                 NamedTunnelDetailView(tunnel: tunnel)
             } else {
                 ContentUnavailableView {
-                    Label("No Tunnel Selected", systemImage: "cloud")
+                    Label("未选择隧道", systemImage: "cloud")
                 } description: {
-                    Text("Select a tunnel from the list to view details")
+                    Text("从列表中选择一个隧道以查看详情")
                 }
             }
         } else if let selectedPort = appState.selectedPort {
             PortDetailView(port: selectedPort)
         } else {
             ContentUnavailableView {
-                Label("No Port Selected", systemImage: "network.slash")
+                Label("未选择端口", systemImage: "network.slash")
             } description: {
-                Text("Select a port from the list to view details")
+                Text("从列表中选择一个端口以查看详情")
             }
         }
     }
@@ -127,9 +127,9 @@ struct MainWindowView: View {
             // Port count
             Group {
                 if appState.filter.isActive || appState.selectedSidebarItem != .allPorts {
-                    Text("\(appState.filteredPorts.count) of \(appState.ports.count) ports")
+                    Text("\(appState.filteredPorts.count) / \(appState.ports.count) 个端口")
                 } else {
-                    Text("\(appState.ports.count) ports listening")
+                    Text("\(appState.ports.count) 个端口正在监听")
                 }
             }
             .font(.caption)
@@ -141,7 +141,7 @@ struct MainWindowView: View {
             if appState.isScanning {
                 ProgressView()
                     .controlSize(.small)
-                Text("Scanning...")
+                Text("扫描中...")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -159,19 +159,19 @@ struct MainWindowView: View {
                     await appState.refresh()
                 }
             } label: {
-                Label("Refresh", systemImage: "arrow.clockwise")
+                Label("刷新", systemImage: "arrow.clockwise")
             }
             .keyboardShortcut("r", modifiers: .command)
             .disabled(appState.isScanning)
-            .help("Refresh port list (Cmd+R)")
+            .help("刷新端口列表（⌘R）")
 
             Button {
                 appState.selectedSidebarItem = .settings
             } label: {
-                Label("Settings", systemImage: "gear")
+                Label("设置", systemImage: "gear")
             }
             .keyboardShortcut(",", modifiers: .command)
-            .help("Open Settings (Cmd+,)")
+            .help("打开设置（⌘,）")
         }
     }
 }

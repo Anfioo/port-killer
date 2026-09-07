@@ -51,7 +51,7 @@ struct PortForwardConnectionEditForm: View {
                 Button {
                     appState.portForwardManager.restartConnection(connection.id)
                 } label: {
-                    Label("Restart", systemImage: "arrow.clockwise")
+                    Label("重启", systemImage: "arrow.clockwise")
                 }
                 .buttonStyle(.bordered)
                 .disabled(connection.portForwardStatus == .disconnected)
@@ -62,7 +62,7 @@ struct PortForwardConnectionEditForm: View {
             // Edit form
             Grid(alignment: .leading, horizontalSpacing: 12, verticalSpacing: 10) {
                 GridRow {
-                    Text("Name").foregroundStyle(.secondary).frame(width: 80, alignment: .trailing)
+                    Text("名称").foregroundStyle(.secondary).frame(width: 80, alignment: .trailing)
                     TextField("", text: $name)
                         .textFieldStyle(.roundedBorder)
                         .frame(maxWidth: 180)
@@ -70,7 +70,7 @@ struct PortForwardConnectionEditForm: View {
                 }
 
                 GridRow {
-                    Text("Namespace").foregroundStyle(.secondary).frame(width: 80, alignment: .trailing)
+                    Text("命名空间").foregroundStyle(.secondary).frame(width: 80, alignment: .trailing)
                     TextField("", text: $namespace)
                         .textFieldStyle(.roundedBorder)
                         .frame(maxWidth: 180)
@@ -78,7 +78,7 @@ struct PortForwardConnectionEditForm: View {
                 }
 
                 GridRow {
-                    Text("Service").foregroundStyle(.secondary).frame(width: 80, alignment: .trailing)
+                    Text("服务").foregroundStyle(.secondary).frame(width: 80, alignment: .trailing)
                     TextField("", text: $service)
                         .textFieldStyle(.roundedBorder)
                         .frame(maxWidth: 180)
@@ -86,7 +86,7 @@ struct PortForwardConnectionEditForm: View {
                 }
 
                 GridRow {
-                    Text("Ports").foregroundStyle(.secondary).frame(width: 80, alignment: .trailing)
+                    Text("端口").foregroundStyle(.secondary).frame(width: 80, alignment: .trailing)
                     HStack(spacing: 8) {
                         TextField("", value: $localPort, format: .number.grouping(.never))
                             .textFieldStyle(.roundedBorder)
@@ -101,7 +101,7 @@ struct PortForwardConnectionEditForm: View {
                 }
 
                 GridRow {
-                    Text("Proxy").foregroundStyle(.secondary).frame(width: 80, alignment: .trailing)
+                    Text("代理").foregroundStyle(.secondary).frame(width: 80, alignment: .trailing)
                     HStack(spacing: 12) {
                         Toggle("", isOn: $proxyEnabled)
                             .toggleStyle(.switch)
@@ -114,31 +114,31 @@ struct PortForwardConnectionEditForm: View {
                                 .frame(width: 70)
                                 .onChange(of: proxyPort) { save() }
 
-                            Toggle("Multi-conn", isOn: $useDirectExec)
+                            Toggle("多连接", isOn: $useDirectExec)
                                 .toggleStyle(.checkbox)
                                 .onChange(of: useDirectExec) { save() }
-                                .help("Multiple simultaneous connections")
+                                .help("多个同时连接")
                         }
                     }
                 }
 
                 GridRow {
-                    Text("Options").foregroundStyle(.secondary).frame(width: 80, alignment: .trailing)
+                    Text("选项").foregroundStyle(.secondary).frame(width: 80, alignment: .trailing)
                     HStack(spacing: 16) {
-                        Toggle("Enabled", isOn: $isEnabled)
+                        Toggle("已启用", isOn: $isEnabled)
                             .onChange(of: isEnabled) { save() }
-                        Toggle("Auto Reconnect", isOn: $autoReconnect)
+                        Toggle("自动重连", isOn: $autoReconnect)
                             .onChange(of: autoReconnect) { save() }
                     }
                     .toggleStyle(.checkbox)
                 }
 
                 GridRow {
-                    Text("Notifications").foregroundStyle(.secondary).frame(width: 80, alignment: .trailing)
+                    Text("通知").foregroundStyle(.secondary).frame(width: 80, alignment: .trailing)
                     HStack(spacing: 16) {
-                        Toggle("On Connect", isOn: $notifyOnConnect)
+                        Toggle("连接时", isOn: $notifyOnConnect)
                             .onChange(of: notifyOnConnect) { save() }
-                        Toggle("On Disconnect", isOn: $notifyOnDisconnect)
+                        Toggle("断开时", isOn: $notifyOnDisconnect)
                             .onChange(of: notifyOnDisconnect) { save() }
                     }
                     .toggleStyle(.checkbox)
