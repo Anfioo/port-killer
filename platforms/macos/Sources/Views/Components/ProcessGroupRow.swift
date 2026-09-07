@@ -55,7 +55,7 @@ struct ProcessGroupListRow: View {
 
             // Port Count Badge (aligned with Type column of header effectively)
             if !showConfirm {
-                Text("\(group.ports.count) ports")
+                Text("\(group.ports.count) 个端口")
                     .font(.caption2)
                     .padding(.horizontal, 6)
                     .padding(.vertical, 2)
@@ -105,7 +105,7 @@ struct ProcessGroupListRow: View {
                 }
                 .buttonStyle(.plain)
                 .opacity(isHovered ? 1 : 0)
-                .help("Kill Process Tree")
+                .help("结束进程树")
                 .frame(width: 80)
                 .padding(.trailing, 16)
             }

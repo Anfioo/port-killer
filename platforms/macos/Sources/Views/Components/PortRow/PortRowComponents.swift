@@ -117,7 +117,7 @@ struct PortTypeBadge: View {
                 .foregroundStyle(processType.color)
                 .clipShape(Capsule())
         } else {
-            Text("Inactive")
+            Text("未激活")
                 .font(font)
                 .padding(.horizontal, horizontalPadding)
                 .padding(.vertical, verticalPadding)
@@ -148,7 +148,7 @@ struct PortKillButton: View {
                     .foregroundStyle(.red)
             }
             .buttonStyle(.plain)
-            .help("Kill process")
+            .help("结束进程")
         } else if let onRemove {
             Button {
                 onRemove()
@@ -157,7 +157,7 @@ struct PortKillButton: View {
                     .foregroundStyle(.red)
             }
             .buttonStyle(.plain)
-            .help("Remove from list")
+            .help("从列表中移除")
         }
     }
 }

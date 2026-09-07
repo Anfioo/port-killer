@@ -21,13 +21,13 @@ struct PortForwardConnectionCard: View {
 
     private var statusText: String {
         if connection.portForwardStatus == .error || connection.proxyStatus == .error {
-            return "Error"
+            return "错误"
         } else if connection.isFullyConnected {
-            return "Connected"
+            return "已连接"
         } else if connection.portForwardStatus == .connecting || connection.proxyStatus == .connecting {
-            return "Connecting..."
+            return "连接中..."
         } else {
-            return "Disconnected"
+            return "已断开"
         }
     }
 
@@ -46,7 +46,7 @@ struct PortForwardConnectionCard: View {
                     .frame(width: 24, height: 24)
             }
             .buttonStyle(.plain)
-            .help("Cancel")
+            .help("取消")
         } else if connection.isFullyConnected {
             Button {
                 appState.portForwardManager.stopConnection(connection.id)
@@ -56,7 +56,7 @@ struct PortForwardConnectionCard: View {
                     .frame(width: 24, height: 24)
             }
             .buttonStyle(.plain)
-            .help("Stop")
+            .help("停止")
         } else {
             Button {
                 appState.portForwardManager.startConnection(connection.id)
@@ -66,7 +66,7 @@ struct PortForwardConnectionCard: View {
                     .frame(width: 24, height: 24)
             }
             .buttonStyle(.plain)
-            .help("Start")
+            .help("启动")
         }
     }
 

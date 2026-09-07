@@ -19,12 +19,12 @@ struct MenuBarActions: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            MenuItemButton(title: "Refresh", icon: "arrow.clockwise", shortcut: "R") {
+            MenuItemButton(title: "刷新", icon: "arrow.clockwise", shortcut: "R") {
                 Task { await state.refresh() }
             }
 
             MenuItemButton(
-                title: useTreeView ? "List View" : "Tree View",
+                title: useTreeView ? "列表视图" : "树状视图",
                 icon: useTreeView ? "list.bullet" : "list.bullet.indent",
                 shortcut: "T"
             ) {
@@ -33,24 +33,24 @@ struct MenuBarActions: View {
 
             if confirmingKillAll {
                 HStack {
-                    Text("Kill all \(state.ports.count) processes?")
+                    Text("结束全部 \(state.ports.count) 个进程？")
                         .font(.callout)
                     Spacer()
-                    Button("Kill") {
+                    Button("结束") {
                         Task { await state.killAll() }
                         confirmingKillAll = false
                     }
                     .buttonStyle(.borderedProminent)
                     .tint(.red)
                     .controlSize(.small)
-                    Button("Cancel") { confirmingKillAll = false }
+                    Button("取消") { confirmingKillAll = false }
                         .buttonStyle(.bordered)
                         .controlSize(.small)
                 }
                 .padding(.horizontal, 12)
                 .padding(.vertical, 6)
             } else {
-                MenuItemButton(title: "Kill All", icon: "xmark.circle", shortcut: "K", isDestructive: true) {
+                MenuItemButton(title: "全部结束", icon: "xmark.circle", shortcut: "K", isDestructive: true) {
                     confirmingKillAll = true
                 }
                 .disabled(state.ports.isEmpty)
@@ -59,7 +59,7 @@ struct MenuBarActions: View {
             Divider()
                 .padding(.vertical, 4)
 
-            MenuItemButton(title: "Open PortKiller", icon: "macwindow", shortcut: "O") {
+            MenuItemButton(title: "打开 PortKiller", icon: "macwindow", shortcut: "O") {
                 openWindow(id: "main")
                 Task { @MainActor in
                     try? await Task.sleep(for: .milliseconds(100))
@@ -67,7 +67,7 @@ struct MenuBarActions: View {
                 }
             }
 
-            MenuItemButton(title: "Settings...", icon: "gear", shortcut: ",") {
+            MenuItemButton(title: "设置…", icon: "gear", shortcut: ",") {
                 state.selectedSidebarItem = .settings
                 openWindow(id: "main")
                 Task { @MainActor in
@@ -76,7 +76,7 @@ struct MenuBarActions: View {
                 }
             }
 
-            MenuItemButton(title: "Quit PortKiller", icon: "power", shortcut: "Q") {
+            MenuItemButton(title: "退出 PortKiller", icon: "power", shortcut: "Q") {
                 NSApplication.shared.terminate(nil)
             }
         }

@@ -9,7 +9,7 @@ struct ServiceListView: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack {
-                Text("Services")
+                Text("服务")
                     .font(.caption)
                     .foregroundStyle(.secondary)
                 Spacer()
@@ -31,7 +31,7 @@ struct ServiceListView: View {
                         Spacer()
                         ProgressView()
                             .scaleEffect(0.8)
-                        Text("Loading services...")
+                        Text("正在加载服务...")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                         Spacer()
@@ -55,7 +55,7 @@ struct ServiceListView: View {
                         Spacer()
                         Image(systemName: "arrow.left")
                             .foregroundStyle(.tertiary)
-                        Text("Select a namespace")
+                        Text("选择一个命名空间")
                             .font(.caption)
                             .foregroundStyle(.tertiary)
                         Spacer()
@@ -65,7 +65,7 @@ struct ServiceListView: View {
                     if services.isEmpty {
                         VStack {
                             Spacer()
-                            Text("No services found")
+                            Text("未找到服务")
                                 .font(.caption)
                                 .foregroundStyle(.tertiary)
                             Spacer()
@@ -114,7 +114,7 @@ struct ServiceRow: View {
                             .foregroundStyle(.tertiary)
                         Text("\u{00B7}")
                             .foregroundStyle(.tertiary)
-                        Text("\(service.ports.count) port\(service.ports.count != 1 ? "s" : "")")
+                        Text("\(service.ports.count) 个端口")
                             .font(.caption2)
                             .foregroundStyle(.tertiary)
                     }

@@ -16,14 +16,14 @@ struct ConnectionsTab: View {
             VStack(spacing: 0) {
                 // Header with action buttons
                 HStack {
-                    Text("Connections")
+                    Text("连接")
                         .font(.headline)
 
                     Spacer()
 
                     Button {
                         let config = PortForwardConnectionConfig(
-                            name: "New Connection",
+                            name: "新建连接",
                             namespace: "default",
                             service: "service-name",
                             localPort: 8080,
@@ -31,21 +31,21 @@ struct ConnectionsTab: View {
                         )
                         appState.portForwardManager.addConnection(config)
                     } label: {
-                        Label("Add", systemImage: "plus.circle.fill")
+                        Label("添加", systemImage: "plus.circle.fill")
                     }
                     .buttonStyle(.bordered)
-                    .help("Add Connection")
+                    .help("添加连接")
 
                     Button {
                         let dm = KubernetesDiscoveryManager(processManager: appState.portForwardManager.processManager)
                         Task { await dm.loadNamespaces() }
                         discoveryManager = dm
                     } label: {
-                        Label("Import", systemImage: "square.and.arrow.down.fill")
+                        Label("导入", systemImage: "square.and.arrow.down.fill")
                     }
                     .buttonStyle(.bordered)
                     .disabled(!DependencyChecker.shared.allRequiredInstalled)
-                    .help("Import from Kubernetes")
+                    .help("从 Kubernetes 导入")
                 }
                 .padding(.horizontal, 20)
                 .padding(.vertical, 12)
@@ -76,9 +76,9 @@ struct ConnectionsTab: View {
                 HStack {
                     let manager = appState.portForwardManager
                     if manager.connections.isEmpty {
-                        Text("No connections configured")
+                        Text("暂无配置的连接")
                     } else {
-                        Text("\(manager.connectedCount) of \(manager.connections.count) connected")
+                        Text("\(manager.connectedCount) / \(manager.connections.count) 已连接")
                     }
 
                     Spacer()
@@ -86,22 +86,22 @@ struct ConnectionsTab: View {
                     if manager.isKillingProcesses {
                         ProgressView()
                             .scaleEffect(0.7)
-                        Text("Killing processes...")
+                        Text("正在终止进程...")
                             .foregroundStyle(.secondary)
                     } else if !manager.connections.isEmpty {
-                        Button("Kill All Stuck") {
+                        Button("终止全部卡住进程") {
                             Task { await manager.killStuckProcesses() }
                         }
                         .buttonStyle(.bordered)
                         .controlSize(.small)
 
-                        Button("Start All") {
+                        Button("全部启动") {
                             manager.startAll()
                         }
                         .buttonStyle(.bordered)
                         .disabled(manager.allConnected)
 
-                        Button("Stop All") {
+                        Button("全部停止") {
                             manager.stopAll()
                         }
                         .buttonStyle(.bordered)

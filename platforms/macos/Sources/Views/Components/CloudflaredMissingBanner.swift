@@ -25,14 +25,14 @@ struct CloudflaredMissingBanner: View {
                     .foregroundStyle(.blue)
 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("cloudflared Required")
+                    Text("需要 cloudflared")
                         .font(.headline)
                     if !isBrewInstalled {
-                        Text("Homebrew is required. Visit brew.sh to install.")
+                        Text("需要 Homebrew。请访问 brew.sh 安装。")
                             .font(.caption)
                             .foregroundStyle(.orange)
                     } else {
-                        Text("Install cloudflared to share ports via Cloudflare Tunnel")
+                        Text("安装 cloudflared 以通过 Cloudflare 隧道分享端口")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
@@ -47,7 +47,7 @@ struct CloudflaredMissingBanner: View {
                     Image(systemName: "arrow.clockwise")
                 }
                 .buttonStyle(.plain)
-                .help("Check if installed")
+                .help("检查是否已安装")
 
                 if isBrewInstalled {
                     // Copy command button
@@ -62,7 +62,7 @@ struct CloudflaredMissingBanner: View {
                         Image(systemName: isCopied ? "checkmark" : "doc.on.doc")
                     }
                     .buttonStyle(.bordered)
-                    .help(isCopied ? "Copied!" : "Copy command")
+                    .help(isCopied ? "已复制！" : "复制命令")
 
                     // Install button
                     Button {
@@ -72,9 +72,9 @@ struct CloudflaredMissingBanner: View {
                             ProgressView()
                                 .scaleEffect(0.7)
                                 .frame(width: 16, height: 16)
-                            Text("Installing...")
+                            Text("安装中...")
                         } else {
-                            Label("Install", systemImage: "arrow.down.circle")
+                            Label("安装", systemImage: "arrow.down.circle")
                         }
                     }
                     .buttonStyle(.borderedProminent)
@@ -86,7 +86,7 @@ struct CloudflaredMissingBanner: View {
                             NSWorkspace.shared.open(url)
                         }
                     } label: {
-                        Label("Get Homebrew", systemImage: "safari")
+                        Label("获取 Homebrew", systemImage: "safari")
                     }
                     .buttonStyle(.borderedProminent)
                 }
@@ -102,7 +102,7 @@ struct CloudflaredMissingBanner: View {
                         .font(.caption)
                         .foregroundStyle(.red)
                     Spacer()
-                    Button("Dismiss") {
+                    Button("关闭") {
                         installError = nil
                     }
                     .font(.caption)
@@ -131,15 +131,15 @@ struct CloudflaredMissingBanner: View {
             let result = await ProcessExecutor.run(brewPath, arguments: ["install", "cloudflared"])
             isInstalling = false
             guard let result else {
-                installError = "Failed to run brew"
+                installError = "运行 brew 失败"
                 return
             }
             if result.succeeded {
                 appState.tunnelManager.recheckInstallation()
             } else {
                 let combined = result.standardOutput + result.standardError
-                let errorOutput = combined.isEmpty ? "Unknown error" : combined
-                installError = "Installation failed: \(errorOutput.prefix(100))"
+                let errorOutput = combined.isEmpty ? "未知错误" : combined
+                installError = "安装失败：\(errorOutput.prefix(100))"
             }
         }
     }

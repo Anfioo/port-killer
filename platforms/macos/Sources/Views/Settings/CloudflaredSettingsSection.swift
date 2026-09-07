@@ -21,14 +21,14 @@ struct CloudflaredSettingsSection: View {
     }
 
     var body: some View {
-        SettingsGroup("Cloudflare Tunnels", icon: "cloud.fill") {
+        SettingsGroup("Cloudflare 隧道", icon: "cloud.fill") {
             VStack(spacing: 0) {
                 SettingsRowContainer {
                     HStack {
                         VStack(alignment: .leading, spacing: 2) {
-                            Text("Tunnel protocol")
+                            Text("隧道协议")
                                 .fontWeight(.medium)
-                            Text("Choose how cloudflared connects to Cloudflare (applies to new tunnels)")
+                            Text("选择 cloudflared 连接 Cloudflare 的方式（仅应用于新隧道）")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                         }
@@ -51,7 +51,7 @@ struct CloudflaredSettingsSection: View {
                 SettingsRowContainer {
                     VStack(alignment: .leading, spacing: 10) {
                         HStack {
-                            Text("cloudflared path")
+                            Text("cloudflared 路径")
                                 .fontWeight(.medium)
 
                             Spacer()
@@ -60,7 +60,7 @@ struct CloudflaredSettingsSection: View {
                                 HStack(spacing: 4) {
                                     Image(systemName: "checkmark.circle.fill")
                                         .foregroundStyle(.green)
-                                    Text("Installed")
+                                    Text("已安装")
                                         .font(.caption)
                                         .foregroundStyle(.secondary)
                                 }
@@ -68,7 +68,7 @@ struct CloudflaredSettingsSection: View {
                                 HStack(spacing: 4) {
                                     Image(systemName: "xmark.circle.fill")
                                         .foregroundStyle(.red)
-                                    Text("Not found")
+                                    Text("未找到")
                                         .font(.caption)
                                         .foregroundStyle(.secondary)
                                 }
@@ -76,7 +76,7 @@ struct CloudflaredSettingsSection: View {
                         }
 
                         HStack(spacing: 8) {
-                            TextField("Custom path (leave empty for auto)", text: $pathInput)
+                            TextField("自定义路径（留空自动检测）", text: $pathInput)
                                 .textFieldStyle(.roundedBorder)
                                 .font(.system(.caption, design: .monospaced))
                                 .onAppear {
@@ -91,7 +91,7 @@ struct CloudflaredSettingsSection: View {
                                 }
 
                             if !pathInput.isEmpty {
-                                Button("Clear") {
+                                Button("清除") {
                                     pathInput = ""
                                     Defaults[.customCloudflaredPath] = nil
                                 }
@@ -102,13 +102,13 @@ struct CloudflaredSettingsSection: View {
 
                         if let path = effectivePath {
                             HStack(spacing: 4) {
-                                Text("Using:")
+                                Text("使用中：")
                                     .font(.caption)
                                     .foregroundStyle(.tertiary)
                                 Text(path)
                                     .font(.system(.caption, design: .monospaced))
                                     .foregroundStyle(.secondary)
-                                Text(service.isUsingCustomPath ? "(custom)" : "(auto)")
+                                Text(service.isUsingCustomPath ? "（自定义）" : "（自动）")
                                     .font(.caption2)
                                     .foregroundStyle(service.isUsingCustomPath ? Color.orange : Color.gray)
                             }
